@@ -48,7 +48,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"riskClass is correct\", function () {\r",
-									"    pm.expect(body.riskClass).to.eql(\"1\");\r",
+									"    pm.expect(body.riskClass).to.eql(\"Flammpunktklasse 1\");\r",
 									"});\r",
 									"\r",
 									"pm.test(\"dangerousGoods is correct\", function () {\r",
@@ -133,7 +133,278 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"host": [
+								"{{baseUrlClient}}"
+							],
+							"path": [
+								"articles"
+							],
+							"query": [
+								{
+									"key": "articleId",
+									"value": "{{articleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Article",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Article was created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"$articleId = pm.variables.get(\"articleId\");\r",
+									"\r",
+									"$expectedLength = pm.variables.get(\"length\");\r",
+									"$expectedHeight = pm.variables.get(\"height\");\r",
+									"$expectedWidth = pm.variables.get(\"width\");\r",
+									"$expectedWeight = pm.variables.get(\"weight\");\r",
+									"$expectedPiecesPerStorageBox = pm.variables.get(\"piecesPerStorageBox\");\r",
+									"$expectedPlannedSalesPerWeek = pm.variables.get(\"plannedSalesPerWeek\");\r",
+									"$expectedMinimumIncomingAmount = pm.variables.get(\"minimumIncomingAmount\");\r",
+									"$expectedStatus = pm.variables.get(\"status\");\r",
+									"$expectedCategory = pm.variables.get(\"category\");\r",
+									"\r",
+									"$expectedClientId = pm.collectionVariables.get(\"clientId\");\r",
+									"\r",
+									"const body = pm.response.json();\r",
+									" \r",
+									"pm.test(\"category is correct\", function () {\r",
+									"    pm.expect(body.category).to.eql($expectedCategory);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"dangerousGoods is correct\", function () {\r",
+									"    pm.expect(body.dangerousGoods).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"bulkGoods is correct\", function () {\r",
+									"    pm.expect(body.bulkGoods).to.eql(false);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"status is correct\", function () {\r",
+									"    pm.expect(body.status).to.eql($expectedStatus);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"length is correct\", function () {\r",
+									"    pm.expect(body.length).to.eql($expectedLength);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"height is correct\", function () {\r",
+									"    pm.expect(body.height).to.eql($expectedHeight);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"width is correct\", function () {\r",
+									"    pm.expect(body.width).to.eql($expectedWidth);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"weight is correct\", function () {\r",
+									"    pm.expect(body.weight).to.eql($expectedWeight);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"piecesPerStorageBox is correct\", function () {\r",
+									"    pm.expect(body.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"plannedSalesPerWeek is correct\", function () {\r",
+									"    pm.expect(body.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"minimumIncomingAmount is correct\", function () {\r",
+									"    pm.expect(body.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
+									"pm.variables.set(\"articleId\", articleId);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"host": [
+								"{{baseUrlClient}}"
+							],
+							"path": [
+								"articles"
+							],
+							"query": [
+								{
+									"key": "articleId",
+									"value": "{{articleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Article - Empty Riskclass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Article was created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"$articleId = pm.variables.get(\"articleId\");\r",
+									"\r",
+									"$expectedLength = pm.variables.get(\"length\");\r",
+									"$expectedHeight = pm.variables.get(\"height\");\r",
+									"$expectedWidth = pm.variables.get(\"width\");\r",
+									"$expectedWeight = pm.variables.get(\"weight\");\r",
+									"$expectedPiecesPerStorageBox = pm.variables.get(\"piecesPerStorageBox\");\r",
+									"$expectedPlannedSalesPerWeek = pm.variables.get(\"plannedSalesPerWeek\");\r",
+									"$expectedMinimumIncomingAmount = pm.variables.get(\"minimumIncomingAmount\");\r",
+									"$expectedStatus = pm.variables.get(\"status\");\r",
+									"$expectedCategory = pm.variables.get(\"category\");\r",
+									"\r",
+									"$expectedClientId = pm.collectionVariables.get(\"clientId\");\r",
+									"\r",
+									"const body = pm.response.json();\r",
+									"\r",
+									"pm.test(\"articleId is correct\", function () {\r",
+									"    pm.expect(body.articleId).to.eql($articleId.toString());\r",
+									"});\r",
+									" \r",
+									"pm.test(\"clientId is correct\", function () {\r",
+									"    pm.expect(body.clientId).to.eql($expectedClientId.toString());\r",
+									"});\r",
+									" \r",
+									"pm.test(\"category is correct\", function () {\r",
+									"    pm.expect(body.category).to.eql($expectedCategory);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"riskClass is correct\", function () {\r",
+									"    pm.expect(body.riskClass).to.eql(null);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"dangerousGoods is correct\", function () {\r",
+									"    pm.expect(body.dangerousGoods).to.eql(false);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"bulkGoods is correct\", function () {\r",
+									"    pm.expect(body.bulkGoods).to.eql(false);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"status is correct\", function () {\r",
+									"    pm.expect(body.status).to.eql($expectedStatus);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"unit default is PCS\", function () {\r",
+									"    pm.expect(body.unit.unit).to.eql(\"PCS\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"length is correct\", function () {\r",
+									"    pm.expect(body.unit.length).to.eql($expectedLength);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"height is correct\", function () {\r",
+									"    pm.expect(body.unit.height).to.eql($expectedHeight);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"width is correct\", function () {\r",
+									"    pm.expect(body.unit.width).to.eql($expectedWidth);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"weight is correct\", function () {\r",
+									"    pm.expect(body.unit.weight).to.eql($expectedWeight);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"piecesPerStorageBox is correct\", function () {\r",
+									"    pm.expect(body.whArticle.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"plannedSalesPerWeek is correct\", function () {\r",
+									"    pm.expect(body.whArticle.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"minimumIncomingAmount is correct\", function () {\r",
+									"    pm.expect(body.whArticle.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid');\r",
+									"var articleId = uuid.v4();\r",
+									"\r",
+									"pm.collectionVariables.set(\"ARTICLE_ID\", articleId);\r",
+									"\r",
+									"pm.variables.set(\"articleId\", articleId);\r",
+									"pm.variables.set(\"length\", _.random(20,500));\r",
+									"pm.variables.set(\"width\", _.random(20,500));\r",
+									"pm.variables.set(\"height\", _.random(20,500));\r",
+									"pm.variables.set(\"weight\", _.random(100,1000));\r",
+									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
+									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
+									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
+									"\r",
+									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
+									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
+									"\r",
+									"var statuses = [\"active\", \"inactive\"];\r",
+									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -209,7 +480,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -281,7 +552,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}}\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -353,7 +624,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -425,7 +696,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -497,7 +768,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -569,7 +840,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -641,7 +912,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -711,7 +982,147 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\"\r\n}",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"host": [
+								"{{baseUrlClient}}"
+							],
+							"path": [
+								"articles"
+							],
+							"query": [
+								{
+									"key": "articleId",
+									"value": "{{articleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Article - Error - Invalid Riskclass",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Category does not exist\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Risk class Abcdef does not exist\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid');\r",
+									"var articleId = uuid.v4();\r",
+									"\r",
+									"pm.variables.set(\"articleId\", articleId);\r",
+									"pm.variables.set(\"length\", _.random(20,500));\r",
+									"pm.variables.set(\"width\", _.random(20,500));\r",
+									"pm.variables.set(\"height\", _.random(20,500));\r",
+									"pm.variables.set(\"weight\", _.random(100,1000));\r",
+									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
+									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
+									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
+									"pm.variables.set(\"category\", \"Lebensmittel\");\r",
+									"\r",
+									"var statuses = [\"active\", \"inactive\"];\r",
+									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Abcdef\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"host": [
+								"{{baseUrlClient}}"
+							],
+							"path": [
+								"articles"
+							],
+							"query": [
+								{
+									"key": "articleId",
+									"value": "{{articleId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Article - Error - Invalid Temperature Zone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Category does not exist\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Temperature zone Tyuio does not exist\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var uuid = require('uuid');\r",
+									"var articleId = uuid.v4();\r",
+									"\r",
+									"pm.variables.set(\"articleId\", articleId);\r",
+									"pm.variables.set(\"length\", _.random(20,500));\r",
+									"pm.variables.set(\"width\", _.random(20,500));\r",
+									"pm.variables.set(\"height\", _.random(20,500));\r",
+									"pm.variables.set(\"weight\", _.random(100,1000));\r",
+									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
+									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
+									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
+									"pm.variables.set(\"category\", \"Lebensmittel\");\r",
+									"\r",
+									"var statuses = [\"active\", \"inactive\"];\r",
+									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Tyuio\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -822,7 +1233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ],\r\n  \"hasApproachingBoxes\": true,\r\n  \"status\": \"ok\",\r\n  \"category\": \"Rest\"\r\n}",
+							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -876,7 +1287,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ],\r\n  \"hasApproachingBoxes\": true,\r\n  \"status\": \"ok\",\r\n  \"category\": \"Rest\"\r\n}",
+							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -939,7 +1350,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ],\r\n  \"hasApproachingBoxes\": true,\r\n  \"status\": \"ok\",\r\n  \"category\": \"Rest\"\r\n}",
+							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -958,69 +1369,6 @@
 								{
 									"key": "locationId",
 									"value": "{{locationId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Stock - Error - Invalid Category",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"$category = pm.variables.get(\"category\")\r",
-									"\r",
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Location category \" + $category + \" does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var category = uuid.v4();\r",
-									"\r",
-									"$articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
-									"\r",
-									"pm.variables.set(\"articleId\", $articleId);\r",
-									"pm.variables.set(\"category\", category);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ],\r\n  \"hasApproachingBoxes\": true,\r\n  \"status\": \"ok\",\r\n  \"category\": \"{{category}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/stocks?locationId=L0001",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "locationId",
-									"value": "L0001"
 								}
 							]
 						}
@@ -1065,7 +1413,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"{{handlingUnit}}\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ],\r\n  \"hasApproachingBoxes\": true,\r\n  \"status\": \"ok\",\r\n  \"category\": \"Rest\"\r\n}",
+							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"{{handlingUnit}}\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1125,7 +1473,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ],\r\n  \"hasApproachingBoxes\": true,\r\n  \"status\": \"ok\",\r\n  \"category\": \"Rest\"\r\n}",
+							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1224,7 +1572,7 @@
 									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
 									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
 									"\r",
-									"var orderTypes = [\"YNOH\", \"YUMX\", \"RBLV\"];\r",
+									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
 									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
 									"\r",
 									"pm.variables.set(\"priority\", _.random(0, 5));\r",
@@ -1252,7 +1600,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"DHL\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
+							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1311,7 +1659,7 @@
 									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
 									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
 									"\r",
-									"var orderTypes = [\"YNOH\", \"YUMX\", \"RBLV\"];\r",
+									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
 									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
 									"\r",
 									"pm.variables.set(\"priority\", _.random(0, 5));\r",
@@ -1339,7 +1687,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"DHL\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": -10\r\n}",
+							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": -10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1427,7 +1775,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"DHL\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
+							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1488,7 +1836,7 @@
 									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
 									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
 									"\r",
-									"var orderTypes = [\"YNOH\", \"YUMX\", \"RBLV\"];\r",
+									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
 									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
 									"\r",
 									"pm.variables.set(\"priority\", _.random(0, 5));\r",
@@ -1576,7 +1924,7 @@
 									"\r",
 									"pm.variables.set(\"packageType\", \"abcdef\");\r",
 									"\r",
-									"var orderTypes = [\"YNOH\", \"YUMX\", \"RBLV\"];\r",
+									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
 									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
 									"\r",
 									"pm.variables.set(\"priority\", _.random(0, 5));\r",
@@ -1604,7 +1952,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"DHL\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
+							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
