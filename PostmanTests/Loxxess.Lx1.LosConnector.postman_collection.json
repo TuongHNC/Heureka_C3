@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a6b35002-048d-4c78-8a39-85ddb1a7a41f",
+		"_postman_id": "befb8c7e-56f9-4418-a521-cd1da9052b2b",
 		"name": "Loxxess.Lx1.LosConnector",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -9,120 +9,1924 @@
 			"name": "Article",
 			"item": [
 				{
-					"name": "Create Article",
+					"name": "High priority cases",
+					"item": [
+						{
+							"name": "Art_1: Call request to create article with valid request body successful",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Add new Article with random articleID, lentth, width, height, weight,...\")",
+											"",
+											"pm.environment.set(\"autoArticleID\", \"autoArticleID_\".concat(_.random(20,500)))",
+											"",
+											"pm.environment.set(\"articleLength\", _.random(20,500));",
+											"pm.environment.set(\"articleWidth\", _.random(20,500));",
+											"pm.environment.set(\"articleHeight\", _.random(20,500));",
+											"pm.environment.set(\"articleWeight\", _.random(100,1000));",
+											"",
+											"pm.environment.set(\"piecesPerStorageBox\", _.random(1,500));",
+											"pm.environment.set(\"plannedSalesPerWeek\", _.random(1,200000));",
+											"pm.environment.set(\"minimumIncomingAmount\", _.random(1,1000));",
+											"",
+											"pm.environment.replaceIn('{{$randomDepartment}}');",
+											"",
+											"let statusArray = [\"active\", \"inactive\"];",
+											"pm.environment.set(\"commonStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);",
+											"",
+											"let categoryArray = [\"Gefahrstoff\", \"Kitex\", \"Kosmetik\", \"Lebensmittel\", \"Rest\", \"Tiernahrung\"];",
+											"pm.environment.set(\"articleCategory\", categoryArray[Math.floor(Math.random() * categoryArray.length)]);",
+											"",
+											"let temperatureArray = [\"Z0\", \"Z1\", \"Z2\"];",
+											"pm.environment.set(\"articleTemp\", temperatureArray[Math.floor(Math.random() * temperatureArray.length)]);",
+											"",
+											"let dangerousGoodsArray = [\"Flammpunktklasse 1\", \"Flammpunktklasse 2\", \"Flammpunktklasse 3\"];",
+											"pm.environment.set(\"dangerousGoods\", dangerousGoodsArray[Math.floor(Math.random() * dangerousGoodsArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Create article data was accepted.\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"$articleId = pm.environment.get(\"autoArticleID\");",
+											"",
+											"$expectedLength = pm.environment.get(\"articleLength\");",
+											"$expectedHeight = pm.environment.get(\"articleHeight\");",
+											"$expectedWidth = pm.environment.get(\"articleWidth\");",
+											"$expectedWeight = pm.environment.get(\"articleWeight\");",
+											"",
+											"$expectedCategory = pm.environment.get(\"articleCategory\");",
+											"$expectedRiskClass = pm.environment.get(\"dangerousGoods\");",
+											"",
+											"$expectedPiecesPerStorageBox = pm.environment.get(\"piecesPerStorageBox\");",
+											"$expectedPlannedSalesPerWeek = pm.environment.get(\"plannedSalesPerWeek\");",
+											"$expectedMinimumIncomingAmount = pm.environment.get(\"minimumIncomingAmount\");",
+											"",
+											"$expectedStatus = pm.environment.get(\"commonStatus\");",
+											"",
+											"$clientId = pm.environment.get(\"clientId\");",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Article Id is: \" + $articleId, function () {",
+											"    pm.expect(responsebody.articleId).to.eql($articleId.toString());",
+											"});",
+											" ",
+											"pm.test(\"clientId is 109\", function () {",
+											"    pm.expect(responsebody.clientId).to.eql($clientId.toString());",
+											"});",
+											"",
+											"pm.test(\"Category is: \" + $expectedCategory, function () {",
+											"    pm.expect(responsebody.category).to.eql($expectedCategory)",
+											"});",
+											"",
+											"pm.test(\"dangerousGoods is: \" + $expectedRiskClass, function () {",
+											"    pm.expect(responsebody.riskClass).to.eql($expectedRiskClass)",
+											"});",
+											"",
+											"pm.test(\"Length is: \" + $expectedLength, function () {",
+											"    pm.expect(responsebody.unit.length).to.eql($expectedLength);",
+											"});",
+											"",
+											"pm.test(\"Height is: \" + $expectedHeight, function () {",
+											"    pm.expect(responsebody.unit.height).to.eql($expectedHeight);",
+											"});",
+											"",
+											"pm.test(\"Width is: \" + $expectedWidth, function () {",
+											"    pm.expect(responsebody.unit.width).to.eql($expectedWidth);",
+											"});",
+											"",
+											"pm.test(\"Weight is: \" + $expectedWeight, function () {",
+											"    pm.expect(responsebody.unit.weight).to.eql($expectedWeight);",
+											"});",
+											"",
+											"pm.test(\"Status is: \" + $expectedStatus, function () {",
+											"    pm.expect(responsebody.status).to.eql($expectedStatus);",
+											"});",
+											"",
+											"pm.test(\"piecesPerStorageBox is: \" + $expectedPiecesPerStorageBox, function () {",
+											"    pm.expect(responsebody.whArticle.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);",
+											"});",
+											"",
+											"pm.test(\"PlannedSalesPerWeek is: \" + $expectedPlannedSalesPerWeek, function () {",
+											"    pm.expect(responsebody.whArticle.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);",
+											"});",
+											"",
+											"pm.test(\"MinimumIncomingAmount is: \" + $expectedMinimumIncomingAmount, function () {",
+											"    pm.expect(responsebody.whArticle.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"{{articleLength}}\",\n    \"width\": \"{{articleWidth}}\",\n    \"height\": {{articleHeight}},\n    \"weight\": {{articleWeight}},\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"{{articleCategory}}\",\n    \"temperatureZone\": \"{{articleTemp}}\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_2:  Call request to update article with valid request body",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											"console.info(\"Update article information with random lentth, width, height, weight,...\")",
+											"",
+											"pm.environment.set(\"articleLength\", _.random(20,500));",
+											"pm.environment.set(\"articleWidth\", _.random(20,500));",
+											"pm.environment.set(\"articleHeight\", _.random(20,500));",
+											"pm.environment.set(\"articleWeight\", _.random(100,1000));",
+											"",
+											"pm.environment.set(\"piecesPerStorageBox\", _.random(1,500));",
+											"pm.environment.set(\"plannedSalesPerWeek\", _.random(1,200000));",
+											"pm.environment.set(\"minimumIncomingAmount\", _.random(1,1000));",
+											"",
+											"pm.environment.replaceIn('{{$randomDepartment}}');",
+											"",
+											"let statusArray = [\"active\", \"inactive\"];",
+											"pm.environment.set(\"commonStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);",
+											"",
+											"let categoryArray = [\"Gefahrstoff\", \"Kitex\", \"Kosmetik\", \"Lebensmittel\", \"Rest\", \"Tiernahrung\"];",
+											"pm.environment.set(\"articleCategory\", categoryArray[Math.floor(Math.random() * categoryArray.length)]);",
+											"",
+											"let temperatureArray = [\"Z0\", \"Z1\", \"Z2\"];",
+											"pm.environment.set(\"articleTemp\", temperatureArray[Math.floor(Math.random() * temperatureArray.length)]);",
+											"",
+											"let dangerousGoodsArray = [\"Flammpunktklasse 1\", \"Flammpunktklasse 2\", \"Flammpunktklasse 3\"];",
+											"pm.environment.set(\"dangerousGoods\", dangerousGoodsArray[Math.floor(Math.random() * dangerousGoodsArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Update article data was accepted.\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"$articleId = pm.environment.get(\"autoArticleID\");",
+											"",
+											"$expectedLength = pm.environment.get(\"articleLength\");",
+											"$expectedHeight = pm.environment.get(\"articleHeight\");",
+											"$expectedWidth = pm.environment.get(\"articleWidth\");",
+											"$expectedWeight = pm.environment.get(\"articleWeight\");",
+											"",
+											"$expectedCategory = pm.environment.get(\"articleCategory\");",
+											"$expectedRiskClass = pm.environment.get(\"dangerousGoods\");",
+											"",
+											"$expectedPiecesPerStorageBox = pm.environment.get(\"piecesPerStorageBox\");",
+											"$expectedPlannedSalesPerWeek = pm.environment.get(\"plannedSalesPerWeek\");",
+											"$expectedMinimumIncomingAmount = pm.environment.get(\"minimumIncomingAmount\");",
+											"",
+											"$expectedStatus = pm.environment.get(\"commonStatus\");",
+											"",
+											"$clientId = pm.environment.get(\"clientId\");",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Article Id is: \" + $articleId, function () {",
+											"    pm.expect(responsebody.articleId).to.eql($articleId.toString());",
+											"});",
+											" ",
+											"pm.test(\"clientId is 109\", function () {",
+											"    pm.expect(responsebody.clientId).to.eql($clientId.toString());",
+											"});",
+											"",
+											"pm.test(\"Category is: \" + $expectedCategory, function () {",
+											"    pm.expect(responsebody.category).to.eql($expectedCategory)",
+											"});",
+											"",
+											"pm.test(\"dangerousGoods is: \" + $expectedRiskClass, function () {",
+											"    pm.expect(responsebody.riskClass).to.eql($expectedRiskClass)",
+											"});",
+											"",
+											"pm.test(\"Length is: \" + $expectedLength, function () {",
+											"    pm.expect(responsebody.unit.length).to.eql($expectedLength);",
+											"});",
+											"",
+											"pm.test(\"Height is: \" + $expectedHeight, function () {",
+											"    pm.expect(responsebody.unit.height).to.eql($expectedHeight);",
+											"});",
+											"",
+											"pm.test(\"Width is: \" + $expectedWidth, function () {",
+											"    pm.expect(responsebody.unit.width).to.eql($expectedWidth);",
+											"});",
+											"",
+											"pm.test(\"Weight is: \" + $expectedWeight, function () {",
+											"    pm.expect(responsebody.unit.weight).to.eql($expectedWeight);",
+											"});",
+											"",
+											"pm.test(\"Status is: \" + $expectedStatus, function () {",
+											"    pm.expect(responsebody.status).to.eql($expectedStatus);",
+											"});",
+											"",
+											"pm.test(\"piecesPerStorageBox is: \" + $expectedPiecesPerStorageBox, function () {",
+											"    pm.expect(responsebody.whArticle.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);",
+											"});",
+											"",
+											"pm.test(\"PlannedSalesPerWeek is: \" + $expectedPlannedSalesPerWeek, function () {",
+											"    pm.expect(responsebody.whArticle.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);",
+											"});",
+											"",
+											"pm.test(\"MinimumIncomingAmount is: \" + $expectedMinimumIncomingAmount, function () {",
+											"    pm.expect(responsebody.whArticle.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"{{articleLength}}\",\n    \"width\": \"{{articleWidth}}\",\n    \"height\": {{articleHeight}},\n    \"weight\": {{articleWeight}},\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"{{articleCategory}}\",\n    \"temperatureZone\": \"{{articleTemp}}\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_8: Verify can get the article information with correct articleID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"$articleId = pm.environment.get(\"autoArticleID\");",
+											"",
+											"$expectedLength = pm.environment.get(\"articleLength\");",
+											"$expectedHeight = pm.environment.get(\"articleHeight\");",
+											"$expectedWidth = pm.environment.get(\"articleWidth\");",
+											"$expectedWeight = pm.environment.get(\"articleWeight\");",
+											"",
+											"$expectedCategory = pm.environment.get(\"articleCategory\");",
+											"",
+											"$expectedPiecesPerStorageBox = pm.environment.get(\"piecesPerStorageBox\");",
+											"$expectedPlannedSalesPerWeek = pm.environment.get(\"plannedSalesPerWeek\");",
+											"$expectedMinimumIncomingAmount = pm.environment.get(\"minimumIncomingAmount\");",
+											"",
+											"$expectedStatus = pm.environment.get(\"commonStatus\");",
+											"",
+											"$clientId = pm.environment.get(\"clientId\");",
+											"",
+											"pm.test(\"Get article \" + $articleId + \" information\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Category is: \" + $expectedCategory, function () {",
+											"    pm.expect(responsebody.category).to.eql($expectedCategory)",
+											"});",
+											"",
+											"pm.test(\"Length is: \" + $expectedLength, function () {",
+											"    pm.expect(responsebody.length).to.eql($expectedLength);",
+											"});",
+											"",
+											"pm.test(\"Height is: \" + $expectedHeight, function () {",
+											"    pm.expect(responsebody.height).to.eql($expectedHeight);",
+											"});",
+											"",
+											"pm.test(\"Width is: \" + $expectedWidth, function () {",
+											"    pm.expect(responsebody.width).to.eql($expectedWidth);",
+											"});",
+											"",
+											"pm.test(\"Weight is: \" + $expectedWeight, function () {",
+											"    pm.expect(responsebody.weight).to.eql($expectedWeight);",
+											"});",
+											"",
+											"pm.test(\"Status is: \" + $expectedStatus, function () {",
+											"    pm.expect(responsebody.status).to.eql($expectedStatus);",
+											"});",
+											"",
+											"pm.test(\"piecesPerStorageBox is: \" + $expectedPiecesPerStorageBox, function () {",
+											"    pm.expect(responsebody.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);",
+											"});",
+											"",
+											"pm.test(\"PlannedSalesPerWeek is: \" + $expectedPlannedSalesPerWeek, function () {",
+											"    pm.expect(responsebody.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);",
+											"});",
+											"",
+											"pm.test(\"MinimumIncomingAmount is: \" + $expectedMinimumIncomingAmount, function () {",
+											"    pm.expect(responsebody.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "unserGeheimerSchluessel"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Verify invalid case",
+					"item": [
+						{
+							"name": "Art_3: Call Create article request with missing madatory fields",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_3: Call request with missing madatory fields\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"temperatureZone must not be empty\",\"height must not be null\",\"width must not be null\",\"category must not be empty\"];",
+											"",
+											"pm.test(\"Verify the error message notice that cannot send request with lacking mandatory fields\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_4: Call request with mandatory fields is null",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_4: Call request with mandatory fields is null\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"temperatureZone must not be empty\",\"height must not be null\",\"width must not be null\",\"category must not be empty\"];",
+											"",
+											"pm.test(\"Verify the error message notice that all mandatory fields could not be null or empty\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": null,\n    \"width\": null,\n    \"height\": null,\n    \"weight\": null,\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": null,\n    \"temperatureZone\": null,\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_4: Call request with mandatory fields is empty",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_4: Call request with mandatory fields is empty\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"temperatureZone must not be empty\",\"height must not be null\",\"width must not be null\",\"category must not be empty\"];",
+											"",
+											"pm.test(\"Verify the error message notice that all mandatory fields could not be null or empty\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"\",\n    \"width\": \"\",\n    \"height\": \"\",\n    \"weight\": \"\",\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"\",\n    \"temperatureZone\": \"\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_5: Call request with plannedSalesPerWeek has large number",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_5: Call request with plannedSalesPerWeek has large number\")",
+											"",
+											"pm.environment.set(\"largeNumber\", 99999999999);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"plannedSalesPerWeek should be less than or equal 1000000.0\"];",
+											"",
+											"pm.test(\"Verify the error message to notice that plannedSalesPerWeek should be less than or equal 1000000.0\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"{{articleLength}}\",\n    \"width\": \"{{articleWidth}}\",\n    \"height\": {{articleHeight}},\n    \"weight\": {{articleWeight}},\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"{{articleCategory}}\",\n    \"temperatureZone\": \"{{articleTemp}}\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": {{largeNumber}},\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_5: Call request with minimumIncomingAmount has large number",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_5: Call request with minimumIncomingAmount has large number\")",
+											"",
+											"pm.environment.set(\"largeNumber\", 99999999999);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"minimumIncomingAmount should be less than or equal 1000000.0\"];",
+											"",
+											"pm.test(\"Verify the error message\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"{{articleLength}}\",\n    \"width\": \"{{articleWidth}}\",\n    \"height\": {{articleHeight}},\n    \"weight\": {{articleWeight}},\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"{{articleCategory}}\",\n    \"temperatureZone\": \"{{articleTemp}}\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{largeNumber}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_6: Verify the status only allow for string “active” or “inactive”",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_5: Call request with minimumIncomingAmount has large number\")",
+											"",
+											"pm.environment.set(\"largeNumber\", 99999999999);",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"",
+											"pm.environment.set(\"randomString\", randomString(8));",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"status should be active or inactive\"];",
+											"",
+											"pm.test(\"Verify the error message\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"{{articleLength}}\",\n    \"width\": \"{{articleWidth}}\",\n    \"height\": {{articleHeight}},\n    \"weight\": {{articleWeight}},\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"{{articleCategory}}\",\n    \"temperatureZone\": \"{{articleTemp}}\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{randomString}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{autoArticleID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{autoArticleID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_7: Verify cannot send request with articleID is empty",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_7: Verify cannot send request with articleID is empty\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code should be 400 Bad Request.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = \"articleId must not be blank\";",
+											"",
+											"pm.test(\"Verify the error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "apiKey",
+										"value": "abc",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"length\": \"{{articleLength}}\",\n    \"width\": \"{{articleWidth}}\",\n    \"height\": {{articleHeight}},\n    \"weight\": {{articleWeight}},\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\n    \"category\": \"{{articleCategory}}\",\n    \"temperatureZone\": \"{{articleTemp}}\",\n    \"dangerousGoods\": \"{{dangerousGoods}}\",\n    \"plannedSalesPerWeek\": \"{{plannedSalesPerWeek}}\",\n    \"minimumIncomingAmount\": \"{{minimumIncomingAmount}}\",\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Art_9: Verify can NOT get the article information with articleID is NOT exist in DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify the status code shoud be 404.\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Article \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify the error message in response body\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Art_9: Verify can NOT get the article information with articleID is NOT exist in DB\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "unserGeheimerSchluessel"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/articles?articleId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"articles"
+									],
+									"query": [
+										{
+											"key": "articleId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "HandlingUnits",
+			"item": [
+				{
+					"name": "High priority cases",
+					"item": [
+						{
+							"name": "HU_1: Call request to create handlingUnits successfully",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_1: Call request to create handlingUnits successfully\")",
+											"",
+											"pm.environment.set(\"handlingID\", \"autoHandlingID_\".concat(_.random(20,500)))"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify create Handling successfully, status code 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_7: Call request to get the status of HandlingUnit successfully (after creating new handling unit)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_7: Call request to get the status of HandlingUnit successfully (after creating new handling unit)\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get handling unit satus successfully, status code 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"let expectedStatus = pm.environment.get(\"commonStatus\");",
+											"",
+											"pm.test(\"Verify status code is: \" + expectedStatus, function () {",
+											"    pm.expect(responsebody.status).to.eql(expectedStatus)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_4: Call request to change the status of handlingUnits successfully",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_4: Call request to change the status of handlingUnits successfully\")",
+											"",
+											"if(pm.environment.get(\"commonStatus\") == \"active\") {",
+											"    pm.environment.set(\"updatedStatus\", \"inactive\")",
+											"} else {",
+											"    pm.environment.set(\"updatedStatus\", \"active\")",
+											"}",
+											"",
+											"console.log(\"common status: \" + pm.environment.get(\"commonStatus\"));",
+											"console.log(\"updated status: \" + pm.environment.get(\"updatedStatus\"));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify update Handling status successfully, status code 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{updatedStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_7: Call request to get the status of HandlingUnit successfully (after updating handling's status)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_7: Call request to get the status of HandlingUnit successfully (after updating handling's status)\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Get handling unit satus successfully, status code 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"let expectedStatus = pm.environment.get(\"updatedStatus\");",
+											"",
+											"pm.test(\"Verify status code is: \" + expectedStatus, function () {",
+											"    pm.expect(responsebody.status).to.eql(expectedStatus)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_9: Call request to DELETE Handling with ID is NOT exist in DB",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_9: Call request to DELETE Handling with ID is NOT exist in DB\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can delete unuse handling, status code 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Verify invalid cases",
+					"item": [
+						{
+							"name": "HU_2: Call request to create handlingUnits with handlingUnitId is empty",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_2: Call request to create handlingUnits with handlingUnitId is empty\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message to notice that handling must not be blank, status code 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = \"handlingUnit must not be blank\";",
+											"",
+											"pm.test(\"Verify error message displays to notice that the handlingID must not be blank\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_3: Call request with status  Is NOT “active” or “inactive”",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_3: Call request with status  Is NOT “active” or “inactive”\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message to notice that status must be active or inactive, status code 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"status should be active or inactive\"];",
+											"",
+											"pm.test(\"Verify error message displays to notice that the status must be active or inactive\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{randomString}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_5: Call request to create handlingUnits with handlingUnitId is empty",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_5: Call request to create handlingUnits with handlingUnitId is empty\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify update Handling status successfully, status code 200\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = \"handlingUnit must not be blank\";",
+											"",
+											"pm.test(\"Verify error message displays to notice that the handlingID must not be blank\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_5: Call request to create handlingUnits with handlingUnitId is NOT exist in DB",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_5: Call request to create handlingUnits with handlingUnitId is NOT exist in DB\");",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify update Handling status with handling ID does NOT exist in DB, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = \"Handling unit \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify error message displays to notice that the testing handlingID does not exist\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_6: Call request with status with is NOT “active” or “inactive”",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_6: Call request with status with is NOT “active” or “inactive”\");",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify update Handling status is NOT active or inactive, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var expectedErrorMessage = [\"status should be active or inactive\"];",
+											"",
+											"pm.test(\"Verify error message displays to notice that the status must be active or inactive\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{randomString}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_8: Call request with HandlingUnit is NOT exist in DB",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_8: Call request with HandlingUnit is NOT exist in DB\")",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"",
+											"pm.environment.set(\"randomString\", randomString(8));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when calling request with HandlingUnit is NOT exist in DB, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"let expectedErrorMessage = \"Handling unit \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify error message when calling request with HandlingUnit is NOT exist in DB: \", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "HU_10: Call request to DELETE Handling with ID is NOT exist in DB",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_10: Call request to DELETE Handling with ID is NOT exist in DB\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can NOT delete handling unit that does NOT exist in DB, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"let expectedErrorMessage = \"Handling unit \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify error message when calling request with HandlingUnit is NOT exist in DB: \", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create Order",
 					"event": [
 						{
-							"listen": "test",
+							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.test(\"Article was created\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"$articleId = pm.variables.get(\"articleId\");\r",
-									"\r",
-									"$expectedLength = pm.variables.get(\"length\");\r",
-									"$expectedHeight = pm.variables.get(\"height\");\r",
-									"$expectedWidth = pm.variables.get(\"width\");\r",
-									"$expectedWeight = pm.variables.get(\"weight\");\r",
-									"$expectedPiecesPerStorageBox = pm.variables.get(\"piecesPerStorageBox\");\r",
-									"$expectedPlannedSalesPerWeek = pm.variables.get(\"plannedSalesPerWeek\");\r",
-									"$expectedMinimumIncomingAmount = pm.variables.get(\"minimumIncomingAmount\");\r",
-									"$expectedStatus = pm.variables.get(\"status\");\r",
-									"$expectedCategory = pm.variables.get(\"category\");\r",
-									"\r",
-									"$expectedClientId = pm.collectionVariables.get(\"clientId\");\r",
-									"\r",
-									"const body = pm.response.json();\r",
-									"\r",
-									"pm.test(\"articleId is correct\", function () {\r",
-									"    pm.expect(body.articleId).to.eql($articleId.toString());\r",
-									"});\r",
-									" \r",
-									"pm.test(\"clientId is correct\", function () {\r",
-									"    pm.expect(body.clientId).to.eql($expectedClientId.toString());\r",
-									"});\r",
-									" \r",
-									"pm.test(\"category is correct\", function () {\r",
-									"    pm.expect(body.category).to.eql($expectedCategory);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"riskClass is correct\", function () {\r",
-									"    pm.expect(body.riskClass).to.eql(\"Flammpunktklasse 1\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"dangerousGoods is correct\", function () {\r",
-									"    pm.expect(body.dangerousGoods).to.eql(true);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"bulkGoods is correct\", function () {\r",
-									"    pm.expect(body.bulkGoods).to.eql(false);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"status is correct\", function () {\r",
-									"    pm.expect(body.status).to.eql($expectedStatus);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"unit default is PCS\", function () {\r",
-									"    pm.expect(body.unit.unit).to.eql(\"PCS\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"length is correct\", function () {\r",
-									"    pm.expect(body.unit.length).to.eql($expectedLength);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"height is correct\", function () {\r",
-									"    pm.expect(body.unit.height).to.eql($expectedHeight);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"width is correct\", function () {\r",
-									"    pm.expect(body.unit.width).to.eql($expectedWidth);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"weight is correct\", function () {\r",
-									"    pm.expect(body.unit.weight).to.eql($expectedWeight);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"piecesPerStorageBox is correct\", function () {\r",
-									"    pm.expect(body.whArticle.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"plannedSalesPerWeek is correct\", function () {\r",
-									"    pm.expect(body.whArticle.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"minimumIncomingAmount is correct\", function () {\r",
-									"    pm.expect(body.whArticle.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);\r",
-									"});\r",
-									"\r",
-									""
+									"var orderLinesArray = [];",
+									"",
+									"for (var _i = 1; _i <= 5; _i++) {",
+									"    var orderLine = {",
+									"        line: _i.toString(),",
+									"        article: pm.environment.get(\"autoArticleID\"),",
+									"        quantity: _.random(1,100)",
+									"    };",
+									"",
+									"    orderLinesArray.push(orderLine);",
+									"}",
+									"pm.environment.set(\"orderLine\", JSON.stringify(orderLinesArray));",
+									"",
+									"var time = require('moment');",
+									"var knownTime = time().subtract(4, 'days');",
+									"var futureTime = time().add(4, 'days');",
+									"pm.environment.set(\"orderID\", \"autoOrderID_\".concat(_.random(20,500)))",
+									"",
+									"pm.environment.set(\"knownDate\", knownTime.format());",
+									"pm.environment.set(\"shippingDeadlineDate\", futureTime.format());",
+									"pm.environment.set(\"loadingDeadlineDate\", futureTime.format());",
+									"pm.environment.set(\"orderPriority\", _.random(1,5));",
+									"",
+									"let packageTypeArray = [\"dm146\",\"dm125\",\"dm104\",\"dm084\",\"dm081\",\"dm069\",\"dm058\",\"dm046\",\"dm42n\",\"dm036\",\"dm30n\",\"dm024\",\"dm015\",\"dm012\",\"dm09n\",\"dm006\",\"dm007\",\"dm001\",\"dmadka\"];",
+									"pm.environment.set(\"packageType\", packageTypeArray[Math.floor(Math.random() * packageTypeArray.length)]);",
+									"",
+									"let orderTypeArray = [\"RBLV\",\"YNOHEXW\",\"YNOHNEXW\",\"YUMX\"];",
+									"pm.environment.set(\"orderType\", orderTypeArray[Math.floor(Math.random() * orderTypeArray.length)]);",
+									"",
+									"let carrierArray = [\"A1\",\"A2\",\"A3\",\"B1\",\"B2\"];",
+									"pm.environment.set(\"carrier\", carrierArray[Math.floor(Math.random() * carrierArray.length)]);"
 								],
 								"type": "text/javascript"
 							}
 						},
 						{
-							"listen": "prerequest",
+							"listen": "test",
 							"script": {
 								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.collectionVariables.set(\"ARTICLE_ID\", articleId);\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
+									"pm.test(\"Create/Update order was accepted.\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const responsebody = pm.response.json();",
+									"",
+									"var clientId = pm.environment.get(\"clientId\");",
+									"var orderID = pm.environment.get(\"orderID\");",
+									"var knownDate = pm.environment.get(\"knownDate\");",
+									"var loadingDeadlineDate = pm.environment.get(\"loadingDeadlineDate\");",
+									"var orderPriority = pm.environment.get(\"orderPriority\");",
+									"var carrier = pm.environment.get(\"carrier\");",
+									"var orderLine = JSON.parse(pm.environment.get(\"orderLine\"));",
+									"",
+									"pm.test(\"ClientID is correct\", function () {",
+									"    pm.expect(responsebody.clientId).to.eql(clientId.toString());",
+									"});",
+									"",
+									"pm.test(\"order Id is correct\", function () {",
+									"    pm.expect(responsebody.orderId).to.eql(orderID);",
+									"});",
+									"",
+									"pm.test(\"known Date is correct\", function () {",
+									"    let actualKnownDate = new Date(responsebody.knownDate);",
+									"    let expectedKnownDate = new Date(knownDate);",
+									"",
+									"    pm.expect(actualKnownDate.getTime()).to.eql(expectedKnownDate.getTime());",
+									"});",
+									"",
+									"pm.test(\"loading DeadlineDate is correct\", function () {",
+									"    let actualLoadingDeadlineDate = new Date(responsebody.loadingDeadlineDate);",
+									"    let expectedLoadingDeadlineDate = new Date(loadingDeadlineDate)",
+									"",
+									"    pm.expect(actualLoadingDeadlineDate.getTime()).to.eql(expectedLoadingDeadlineDate.getTime());",
+									"});",
+									"",
+									"pm.test(\"priority is correct\", function () {",
+									"    pm.expect(responsebody.priority).to.eql(orderPriority);",
+									"});",
+									"",
+									"pm.test(\"orderlines is correct\", function () {",
+									"    pm.expect(JSON.stringify(responsebody.orderlines)).to.eql(JSON.stringify(orderLine));",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -130,28 +1934,39 @@
 					],
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "ApiKey",
+								"value": "ourSecretApiKey"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
 						},
 						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
 							"host": [
-								"{{baseUrlClient}}"
+								"{{host}}"
 							],
 							"path": [
-								"articles"
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
+								"orders"
 							],
 							"query": [
 								{
-									"key": "articleId",
-									"value": "{{articleId}}"
+									"key": "orderId",
+									"value": "{{orderID}}"
 								}
 							]
 						}
@@ -159,120 +1974,88 @@
 					"response": []
 				},
 				{
-					"name": "Get Article",
+					"name": "GET order Information",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Article was created\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"$articleId = pm.variables.get(\"articleId\");\r",
-									"\r",
-									"$expectedLength = pm.variables.get(\"length\");\r",
-									"$expectedHeight = pm.variables.get(\"height\");\r",
-									"$expectedWidth = pm.variables.get(\"width\");\r",
-									"$expectedWeight = pm.variables.get(\"weight\");\r",
-									"$expectedPiecesPerStorageBox = pm.variables.get(\"piecesPerStorageBox\");\r",
-									"$expectedPlannedSalesPerWeek = pm.variables.get(\"plannedSalesPerWeek\");\r",
-									"$expectedMinimumIncomingAmount = pm.variables.get(\"minimumIncomingAmount\");\r",
-									"$expectedStatus = pm.variables.get(\"status\");\r",
-									"$expectedCategory = pm.variables.get(\"category\");\r",
-									"\r",
-									"$expectedClientId = pm.collectionVariables.get(\"clientId\");\r",
-									"\r",
-									"const body = pm.response.json();\r",
-									" \r",
-									"pm.test(\"category is correct\", function () {\r",
-									"    pm.expect(body.category).to.eql($expectedCategory);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"dangerousGoods is correct\", function () {\r",
-									"    pm.expect(body.dangerousGoods).to.eql(true);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"bulkGoods is correct\", function () {\r",
-									"    pm.expect(body.bulkGoods).to.eql(false);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"status is correct\", function () {\r",
-									"    pm.expect(body.status).to.eql($expectedStatus);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"length is correct\", function () {\r",
-									"    pm.expect(body.length).to.eql($expectedLength);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"height is correct\", function () {\r",
-									"    pm.expect(body.height).to.eql($expectedHeight);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"width is correct\", function () {\r",
-									"    pm.expect(body.width).to.eql($expectedWidth);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"weight is correct\", function () {\r",
-									"    pm.expect(body.weight).to.eql($expectedWeight);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"piecesPerStorageBox is correct\", function () {\r",
-									"    pm.expect(body.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"plannedSalesPerWeek is correct\", function () {\r",
-									"    pm.expect(body.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"minimumIncomingAmount is correct\", function () {\r",
-									"    pm.expect(body.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									""
+									"pm.test(\"Get Order information successfully.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var moment = require('moment');",
+									"",
+									"var clientId = pm.environment.get(\"clientId\");",
+									"var orderID = pm.environment.get(\"orderID\");",
+									"var knownDate = pm.environment.get(\"knownDate\");",
+									"var loadingDeadlineDate = pm.environment.get(\"loadingDeadlineDate\");",
+									"var orderPriority = pm.environment.get(\"orderPriority\");",
+									"var carrier = pm.environment.get(\"carrier\");",
+									"",
+									"const responsebody = pm.response.json();",
+									"",
+									"pm.test(\"ClientID is correct\", function () {",
+									"    pm.expect(responsebody.clientId).to.eql(clientId.toString());",
+									"});",
+									"",
+									"pm.test(\"order Id is correct\", function () {",
+									"    pm.expect(responsebody.orderId).to.eql(orderID.toString());",
+									"});",
+									"",
+									"pm.test(\"known Date is correct\", function () {",
+									"    let actualKnownDate = new Date(responsebody.knownDate);",
+									"    let expectedKnownDate = new Date(knownDate);",
+									"",
+									"    pm.expect(actualKnownDate.getTime()).to.eql(expectedKnownDate.getTime());",
+									"});",
+									"",
+									"pm.test(\"loading DeadlineDate is correct\", function () {",
+									"    let actualLoadingDeadlineDate = new Date(responsebody.loadingDeadlineDate);",
+									"    let expectedLoadingDeadlineDate = new Date(loadingDeadlineDate)",
+									"",
+									"    pm.expect(actualLoadingDeadlineDate.getTime()).to.eql(expectedLoadingDeadlineDate.getTime());",
+									"});",
+									"",
+									"pm.test(\"priority is correct\", function () {",
+									"    pm.expect(responsebody.priority).to.eql(orderPriority);",
+									"});"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+						"header": [
+							{
+								"key": "ApiKey",
+								"value": "ourSecretApiKey"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
 							}
-						},
+						],
 						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
 							"host": [
-								"{{baseUrlClient}}"
+								"{{host}}"
 							],
 							"path": [
-								"articles"
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
+								"orders"
 							],
 							"query": [
 								{
-									"key": "articleId",
-									"value": "{{articleId}}"
+									"key": "orderId",
+									"value": "{{orderID}}"
 								}
 							]
 						}
@@ -280,867 +2063,51 @@
 					"response": []
 				},
 				{
-					"name": "Create Article - Empty Riskclass",
+					"name": "Delete OrderId",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Article was created\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"$articleId = pm.variables.get(\"articleId\");\r",
-									"\r",
-									"$expectedLength = pm.variables.get(\"length\");\r",
-									"$expectedHeight = pm.variables.get(\"height\");\r",
-									"$expectedWidth = pm.variables.get(\"width\");\r",
-									"$expectedWeight = pm.variables.get(\"weight\");\r",
-									"$expectedPiecesPerStorageBox = pm.variables.get(\"piecesPerStorageBox\");\r",
-									"$expectedPlannedSalesPerWeek = pm.variables.get(\"plannedSalesPerWeek\");\r",
-									"$expectedMinimumIncomingAmount = pm.variables.get(\"minimumIncomingAmount\");\r",
-									"$expectedStatus = pm.variables.get(\"status\");\r",
-									"$expectedCategory = pm.variables.get(\"category\");\r",
-									"\r",
-									"$expectedClientId = pm.collectionVariables.get(\"clientId\");\r",
-									"\r",
-									"const body = pm.response.json();\r",
-									"\r",
-									"pm.test(\"articleId is correct\", function () {\r",
-									"    pm.expect(body.articleId).to.eql($articleId.toString());\r",
-									"});\r",
-									" \r",
-									"pm.test(\"clientId is correct\", function () {\r",
-									"    pm.expect(body.clientId).to.eql($expectedClientId.toString());\r",
-									"});\r",
-									" \r",
-									"pm.test(\"category is correct\", function () {\r",
-									"    pm.expect(body.category).to.eql($expectedCategory);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"riskClass is correct\", function () {\r",
-									"    pm.expect(body.riskClass).to.eql(null);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"dangerousGoods is correct\", function () {\r",
-									"    pm.expect(body.dangerousGoods).to.eql(false);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"bulkGoods is correct\", function () {\r",
-									"    pm.expect(body.bulkGoods).to.eql(false);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"status is correct\", function () {\r",
-									"    pm.expect(body.status).to.eql($expectedStatus);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"unit default is PCS\", function () {\r",
-									"    pm.expect(body.unit.unit).to.eql(\"PCS\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"length is correct\", function () {\r",
-									"    pm.expect(body.unit.length).to.eql($expectedLength);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"height is correct\", function () {\r",
-									"    pm.expect(body.unit.height).to.eql($expectedHeight);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"width is correct\", function () {\r",
-									"    pm.expect(body.unit.width).to.eql($expectedWidth);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"weight is correct\", function () {\r",
-									"    pm.expect(body.unit.weight).to.eql($expectedWeight);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"piecesPerStorageBox is correct\", function () {\r",
-									"    pm.expect(body.whArticle.piecesPerStorageBox).to.eql($expectedPiecesPerStorageBox);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"plannedSalesPerWeek is correct\", function () {\r",
-									"    pm.expect(body.whArticle.plannedSalesPerWeek).to.eql($expectedPlannedSalesPerWeek);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"minimumIncomingAmount is correct\", function () {\r",
-									"    pm.expect(body.whArticle.minimumIncomingAmount).to.eql($expectedMinimumIncomingAmount);\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.collectionVariables.set(\"ARTICLE_ID\", articleId);\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
+									"pm.test(\"Delete Order successfully.\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "ApiKey",
+								"value": "ourSecretApiKey"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
 							}
-						},
+						],
 						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
 							"host": [
-								"{{baseUrlClient}}"
+								"{{host}}"
 							],
 							"path": [
-								"articles"
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
+								"orders"
 							],
 							"query": [
 								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Article",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Article was created\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"$articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
-									"\r",
-									"const body = pm.response.json();\r",
-									"\r",
-									"pm.test(\"articleId is correct\", function () {\r",
-									"    pm.expect(body.articleId).to.eql($articleId.toString());\r",
-									"});\r",
-									" \r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{ARTICLE_ID}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{ARTICLE_ID}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Empty Status",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Error 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().body[0]).to.eql(\"status must not be empty\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Empty Category",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Error 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().body[0]).to.eql(\"category must not be empty\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Empty Weight",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Error 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().body[0]).to.eql(\"weight must not be null\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Empty Height",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Error 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().body[0]).to.eql(\"height must not be null\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Empty Width",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Error 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().body[0]).to.eql(\"width must not be null\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Empty Length",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Error 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().body[0]).to.eql(\"length must not be null\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"\r",
-									"var categories = [\"Lebensmittel\", \"Tiernahrung\", \"Kitex\"];\r",
-									"pm.variables.set(\"category\", categories[Math.floor(Math.random() * categories.length)]);\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Invalid Category",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Category does not exist\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Category zzzyyyccc does not exist\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"pm.variables.set(\"category\", \"zzzyyyccc\");\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Invalid Riskclass",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Category does not exist\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Risk class Abcdef does not exist\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"pm.variables.set(\"category\", \"Lebensmittel\");\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Abcdef\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Z0\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Article - Error - Invalid Temperature Zone",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Category does not exist\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Temperature zone Tyuio does not exist\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);\r",
-									"pm.variables.set(\"length\", _.random(20,500));\r",
-									"pm.variables.set(\"width\", _.random(20,500));\r",
-									"pm.variables.set(\"height\", _.random(20,500));\r",
-									"pm.variables.set(\"weight\", _.random(100,1000));\r",
-									"pm.variables.set(\"piecesPerStorageBox\", _.random(1,500));\r",
-									"pm.variables.set(\"plannedSalesPerWeek\", _.random(1,200000));\r",
-									"pm.variables.set(\"minimumIncomingAmount\", _.random(1,1000));\r",
-									"pm.variables.set(\"category\", \"Lebensmittel\");\r",
-									"\r",
-									"var statuses = [\"active\", \"inactive\"];\r",
-									"pm.variables.set(\"status\", statuses[Math.floor(Math.random() * statuses.length)]);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"length\": {{length}},\r\n    \"width\": {{width}},\r\n    \"height\": {{height}},\r\n    \"weight\": {{weight}},\r\n    \"piecesPerStorageBox\": {{piecesPerStorageBox}},\r\n    \"category\": \"{{category}}\",\r\n    \"dangerousGoods\": \"Flammpunktklasse 1\",\r\n    \"plannedSalesPerWeek\": {{plannedSalesPerWeek}},\r\n    \"minimumIncomingAmount\": {{minimumIncomingAmount}},\r\n    \"status\": \"{{status}}\",\r\n    \"temperatureZone\": \"Tyuio\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/articles?articleId={{articleId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"articles"
-							],
-							"query": [
-								{
-									"key": "articleId",
-									"value": "{{articleId}}"
+									"key": "orderId",
+									"value": "{{orderID}}"
 								}
 							]
 						}
@@ -1153,44 +2120,25 @@
 			"name": "Location",
 			"item": [
 				{
-					"name": "Create Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Location was updated.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "Get location information",
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"ok\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{baseUrlClient}}/handlingUnits?handlingUnitId=L0001",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/locations?locationId=handlingUnit6",
 							"host": [
-								"{{baseUrlClient}}"
+								"{{host}}"
 							],
 							"path": [
-								"handlingUnits"
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
+								"locations"
 							],
 							"query": [
 								{
-									"key": "handlingUnitId",
-									"value": "L0001"
+									"key": "locationId",
+									"value": "handlingUnit6"
 								}
 							]
 						}
@@ -1200,58 +2148,45 @@
 			]
 		},
 		{
-			"name": "Stock",
+			"name": "Stocks",
 			"item": [
 				{
-					"name": "Create Stock",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"$articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
-									"\r",
-									"pm.variables.set(\"articleId\", $articleId);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "Create Stock with locationId",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "ApiKey",
+								"value": "ourSecretApiKey"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"2181002\",\n            \"quantity\": 11111,\n            \"handlingUnit\": \"handlingUnit5\",\n            \"status\": \"ok\"\n        },\n        {\n            \"article\": \"2181003\",\n            \"quantity\": 11122,\n            \"handlingUnit\": \"handlingUnit4\",\n            \"status\": \"ok\"\n        }\n    ]\n}"
 						},
 						"url": {
-							"raw": "{{baseUrlClient}}/stocks?locationId=L0001",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId=autoHandlingID_113",
 							"host": [
-								"{{baseUrlClient}}"
+								"{{host}}"
 							],
 							"path": [
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
 								"stocks"
 							],
 							"query": [
 								{
 									"key": "locationId",
-									"value": "L0001"
+									"value": "autoHandlingID_113"
 								}
 							]
 						}
@@ -1259,239 +2194,25 @@
 					"response": []
 				},
 				{
-					"name": "Create Stock - Dummy Article",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "GET stock information",
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{baseUrlClient}}/stocks?locationId=L0001",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId=handlingUnit5",
 							"host": [
-								"{{baseUrlClient}}"
+								"{{host}}"
 							],
 							"path": [
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
 								"stocks"
 							],
 							"query": [
 								{
 									"key": "locationId",
-									"value": "L0001"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Stock - Error - Invalid Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"$locationId = pm.variables.get(\"locationId\")\r",
-									"\r",
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Location \" + $locationId + \" does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var locationId = uuid.v4();\r",
-									"\r",
-									"$articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
-									"\r",
-									"pm.variables.set(\"articleId\", $articleId);\r",
-									"pm.variables.set(\"locationId\", locationId);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/stocks?locationId={{locationId}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "locationId",
-									"value": "{{locationId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Stock - Error - Invalid Handling Unit",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"$handlingUnit = pm.variables.get(\"handlingUnit\")\r",
-									"\r",
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Handling unit \" + $handlingUnit + \" does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var handlingUnit = uuid.v4();\r",
-									"\r",
-									"$articleId = pm.collectionVariables.get(\"ARTICLE_ID\");\r",
-									"\r",
-									"pm.variables.set(\"articleId\", $articleId);\r",
-									"pm.variables.set(\"handlingUnit\", handlingUnit);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"{{handlingUnit}}\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/stocks?locationId=L0001",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "locationId",
-									"value": "L0001"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Stock - Error - Invalid Article",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"$articleId = pm.variables.get(\"articleId\")\r",
-									"\r",
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Article \" + $articleId + \" does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');\r",
-									"var articleId = uuid.v4();\r",
-									"\r",
-									"pm.variables.set(\"articleId\", articleId);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"stocks\": [\r\n    {\r\n      \"quantity\": 10,\r\n      \"handlingUnit\": \"L0001\",\r\n      \"article\": \"{{articleId}}\",\r\n      \"status\": \"ok\"\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/stocks?locationId=L0001",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"stocks"
-							],
-							"query": [
-								{
-									"key": "locationId",
-									"value": "L0001"
+									"value": "handlingUnit5"
 								}
 							]
 						}
@@ -1499,1533 +2220,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Order",
-			"item": [
-				{
-					"name": "New Order",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var moment = require('moment');\r",
-									"\r",
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"$clientId = pm.collectionVariables.get(\"clientId\");\r",
-									"\r",
-									"$orderId = pm.variables.get(\"orderNumber\");\r",
-									"$knownDate = pm.variables.get(\"knownDate\");\r",
-									"$loadingDeadlineDate = pm.variables.get(\"loadingDeadlineDate\");\r",
-									"\r",
-									"const body = pm.response.json();\r",
-									"\r",
-									"pm.test(\"clientId is 109\", function () {\r",
-									"    pm.expect(body.clientId).to.eql($clientId.toString());\r",
-									"});\r",
-									"\r",
-									"pm.test(\"orderId is correct\", function () {\r",
-									"    pm.expect(body.orderId).to.eql($orderId);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"knownDate is correct\", function () {\r",
-									"    var $isSame = moment(body.knownDate).isSame($knownDate);\r",
-									"\r",
-									"    pm.expect($isSame).to.be.true;\r",
-									"});\r",
-									"\r",
-									"pm.test(\"loadingDeadlineDate is correct\", function () {\r",
-									"    var $isSame = moment(body.loadingDeadlineDate).isSame($loadingDeadlineDate);\r",
-									"\r",
-									"    pm.expect($isSame).to.be.true;\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Location is present in head\", function () {\r",
-									"    pm.response.to.have.header(\"Location\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var moment = require('moment');\r",
-									"\r",
-									"var uuid = require('uuid');\r",
-									"var orderId = uuid.v4();\r",
-									"\r",
-									"pm.collectionVariables.set(\"ORDER_ID\", orderId);\r",
-									"\r",
-									"var knownMoment = moment().subtract(3, 'days');\r",
-									"var futureMoment = moment().add(2, 'days');\r",
-									"\r",
-									"pm.variables.set(\"orderNumber\", orderId);\r",
-									"pm.variables.set(\"knownDate\", knownMoment.format());\r",
-									"pm.variables.set(\"loadingDeadlineDate\", futureMoment.format());\r",
-									"\r",
-									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
-									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
-									"\r",
-									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
-									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
-									"\r",
-									"pm.variables.set(\"priority\", _.random(0, 5));\r",
-									"\r",
-									"var orderLines = [];\r",
-									"\r",
-									"for (var _i = 1; _i <= 15; _i++) {\r",
-									"    var orderLine = {\r",
-									"        line: _i.toString(),\r",
-									"        article: \"{{ARTICLE_ID}}\",\r",
-									"        quantity: _.random(1,200)\r",
-									"    };\r",
-									"\r",
-									"    orderLines.push(orderLine);\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"orderLines\", JSON.stringify(orderLines));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{orderNumber}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{orderNumber}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Order - Error - Invalid maxPackageWeight",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var moment = require('moment');\r",
-									"\r",
-									"var uuid = require('uuid');\r",
-									"var orderId = uuid.v4();\r",
-									"\r",
-									"var knownMoment = moment().subtract(3, 'days');\r",
-									"var futureMoment = moment().add(2, 'days');\r",
-									"\r",
-									"pm.variables.set(\"orderNumber\", orderId);\r",
-									"pm.variables.set(\"knownDate\", knownMoment.format());\r",
-									"pm.variables.set(\"loadingDeadlineDate\", futureMoment.format());\r",
-									"\r",
-									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
-									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
-									"\r",
-									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
-									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
-									"\r",
-									"pm.variables.set(\"priority\", _.random(0, 5));\r",
-									"\r",
-									"var orderLines = [];\r",
-									"\r",
-									"for (var _i = 1; _i <= 15; _i++) {\r",
-									"    var orderLine = {\r",
-									"        line: _i.toString(),\r",
-									"        article: \"{{ARTICLE_ID}}\",\r",
-									"        quantity: _.random(1,200)\r",
-									"    };\r",
-									"\r",
-									"    orderLines.push(orderLine);\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"orderLines\", JSON.stringify(orderLines));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": -10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{orderNumber}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{orderNumber}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Order - Error - Invalid Order Type",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Order type does not exist\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Order type xxxyyyzzz does not exist\");\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var moment = require('moment');\r",
-									"\r",
-									"var uuid = require('uuid');\r",
-									"var orderId = uuid.v4();\r",
-									"\r",
-									"var knownMoment = moment().subtract(3, 'days');\r",
-									"var futureMoment = moment().add(2, 'days');\r",
-									"\r",
-									"pm.variables.set(\"orderNumber\", orderId);\r",
-									"pm.variables.set(\"knownDate\", knownMoment.format());\r",
-									"pm.variables.set(\"loadingDeadlineDate\", futureMoment.format());\r",
-									"\r",
-									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
-									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
-									"\r",
-									"pm.variables.set(\"orderType\", \"xxxyyyzzz\");\r",
-									"\r",
-									"pm.variables.set(\"priority\", _.random(0, 5));\r",
-									"\r",
-									"var orderLines = [];\r",
-									"\r",
-									"for (var _i = 1; _i <= 15; _i++) {\r",
-									"    var orderLine = {\r",
-									"        line: _i.toString(),\r",
-									"        article: \"{{ARTICLE_ID}}\",\r",
-									"        quantity: _.random(1,200)\r",
-									"    };\r",
-									"\r",
-									"    orderLines.push(orderLine);\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"orderLines\", JSON.stringify(orderLines));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{orderNumber}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{orderNumber}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Order - Error - Invalid Carrier",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Carrier does not exist\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Carrier ABCDEF does not exist\");\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var moment = require('moment');\r",
-									"\r",
-									"var uuid = require('uuid');\r",
-									"var orderId = uuid.v4();\r",
-									"\r",
-									"var knownMoment = moment().subtract(3, 'days');\r",
-									"var futureMoment = moment().add(2, 'days');\r",
-									"\r",
-									"pm.variables.set(\"orderNumber\", orderId);\r",
-									"pm.variables.set(\"knownDate\", knownMoment.format());\r",
-									"pm.variables.set(\"loadingDeadlineDate\", futureMoment.format());\r",
-									"\r",
-									"var packages = [\"dm146\", \"dm125\", \"dm104\"];\r",
-									"pm.variables.set(\"packageType\", packages[Math.floor(Math.random() * packages.length)]);\r",
-									"\r",
-									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
-									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
-									"\r",
-									"pm.variables.set(\"priority\", _.random(0, 5));\r",
-									"\r",
-									"var orderLines = [];\r",
-									"\r",
-									"for (var _i = 1; _i <= 15; _i++) {\r",
-									"    var orderLine = {\r",
-									"        line: _i.toString(),\r",
-									"        article: \"{{ARTICLE_ID}}\",\r",
-									"        quantity: _.random(1,200)\r",
-									"    };\r",
-									"\r",
-									"    orderLines.push(orderLine);\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"orderLines\", JSON.stringify(orderLines));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"ABCDEF\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{orderNumber}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{orderNumber}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Order - Error - Invalid Package Type",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Package type does not exist\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Package type abcdef does not exist\");\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var moment = require('moment');\r",
-									"\r",
-									"var uuid = require('uuid');\r",
-									"var orderId = uuid.v4();\r",
-									"\r",
-									"var knownMoment = moment().subtract(3, 'days');\r",
-									"var futureMoment = moment().add(2, 'days');\r",
-									"\r",
-									"pm.variables.set(\"orderNumber\", orderId);\r",
-									"pm.variables.set(\"knownDate\", knownMoment.format());\r",
-									"pm.variables.set(\"loadingDeadlineDate\", futureMoment.format());\r",
-									"\r",
-									"pm.variables.set(\"packageType\", \"abcdef\");\r",
-									"\r",
-									"var orderTypes = [\"YNOHEXW\", \"YNOHNEXW\", \"YUMX\"];\r",
-									"pm.variables.set(\"orderType\", orderTypes[Math.floor(Math.random() * orderTypes.length)]);\r",
-									"\r",
-									"pm.variables.set(\"priority\", _.random(0, 5));\r",
-									"\r",
-									"var orderLines = [];\r",
-									"\r",
-									"for (var _i = 1; _i <= 15; _i++) {\r",
-									"    var orderLine = {\r",
-									"        line: _i.toString(),\r",
-									"        article: \"{{ARTICLE_ID}}\",\r",
-									"        quantity: _.random(1,200)\r",
-									"    };\r",
-									"\r",
-									"    orderLines.push(orderLine);\r",
-									"}\r",
-									"\r",
-									"pm.variables.set(\"orderLines\", JSON.stringify(orderLines));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"knownDate\": \"{{knownDate}}\",\r\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\r\n  \"packageType\": \"{{packageType}}\",\r\n  \"priority\": {{priority}},\r\n  \"carrier\": \"A1\",\r\n  \"orderType\": \"{{orderType}}\",\r\n  \"orderlines\": {{orderLines}},\r\n  \"maxPackageWeight\": 10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{orderNumber}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{orderNumber}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Order",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{ORDER_ID}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{ORDER_ID}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Location 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Stock was updated.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"ok\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/handlingUnits?handlingUnitId=DLR-4-223-1-212",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"handlingUnits"
-							],
-							"query": [
-								{
-									"key": "handlingUnitId",
-									"value": "DLR-4-223-1-212"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Location 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Stock was updated.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"ok\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/handlingUnits?handlingUnitId=K-42-134-313-10",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"handlingUnits"
-							],
-							"query": [
-								{
-									"key": "handlingUnitId",
-									"value": "K-42-134-313-10"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Order Reservations",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');",
-									"var reserveId1 = uuid.v4();",
-									"var reserveId2 = uuid.v4();",
-									"",
-									"pm.variables.set(\"reserveId1\", reserveId1);",
-									"pm.variables.set(\"reserveId2\", reserveId2);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"orderline\":\r\n  [\r\n    {\r\n      \"orderlineReservations\":\r\n      [\r\n        {\r\n          \"clientReservationId\": \"{{reserveId1}}\",\r\n          \"quantity\": 2.000,\r\n          \"pickLocation\": \"DLR-4-223-1-212\",\r\n          \"releaseDate\": \"2018-03-07T14:21:07\",\r\n          \"reservationDate\": \"2018-03-07T14:21:07\"\r\n        },\r\n        {\r\n          \"clientReservationId\": \"{{reserveId2}}\",\r\n          \"quantity\": 1.000,\r\n          \"pickLocation\": \"K-42-134-313-10\",\r\n          \"releaseDate\": \"2018-03-07T14:21:07\",\r\n          \"reservationDate\": \"2018-03-07T14:21:07\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders/orderlines?orderId={{ORDER_ID}}&orderLineId=1",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders",
-								"orderlines"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{ORDER_ID}}"
-								},
-								{
-									"key": "orderLineId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Order Reservations - Error - Invalid Order",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"$orderId = pm.variables.get(\"orderId\");\r",
-									"$clientId = pm.collectionVariables.get(\"clientId\");\r",
-									"\r",
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Order \" + $orderId + \" does not exist for client \" + $clientId);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');",
-									"var orderId = uuid.v4();",
-									"",
-									"pm.variables.set(\"orderId\", orderId);",
-									"",
-									"var reserveId1 = uuid.v4();",
-									"var reserveId2 = uuid.v4();",
-									"",
-									"pm.variables.set(\"reserveId1\", reserveId1);",
-									"pm.variables.set(\"reserveId2\", reserveId2);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"orderline\":\r\n  [\r\n    {\r\n      \"orderlineReservations\":\r\n      [\r\n        {\r\n          \"clientReservationId\": \"{{reserveId1}}\",\r\n          \"quantity\": 2.000,\r\n          \"pickLocation\": \"DLR-4-223-1-212\",\r\n          \"releaseDate\": \"2018-03-07T14:21:07\",\r\n          \"reservationDate\": \"2018-03-07T14:21:07\"\r\n        },\r\n        {\r\n          \"clientReservationId\": \"{{reserveId2}}\",\r\n          \"quantity\": 1.000,\r\n          \"pickLocation\": \"K-42-134-313-10\",\r\n          \"releaseDate\": \"2018-03-07T14:21:07\",\r\n          \"reservationDate\": \"2018-03-07T14:21:07\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders/orderlines?orderId={{orderId}}&orderLineId=1",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders",
-								"orderlines"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{orderId}}"
-								},
-								{
-									"key": "orderLineId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Order Reservations - Error - Invalid Order Line",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Order line 20 does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid = require('uuid');",
-									"",
-									"var reserveId1 = uuid.v4();",
-									"var reserveId2 = uuid.v4();",
-									"",
-									"pm.variables.set(\"reserveId1\", reserveId1);",
-									"pm.variables.set(\"reserveId2\", reserveId2);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"orderline\":\r\n  [\r\n    {\r\n      \"orderlineReservations\":\r\n      [\r\n        {\r\n          \"clientReservationId\": \"{{reserveId1}}\",\r\n          \"quantity\": 2.000,\r\n          \"pickLocation\": \"DLR-4-223-1-212\",\r\n          \"releaseDate\": \"2018-03-07T14:21:07\",\r\n          \"reservationDate\": \"2018-03-07T14:21:07\"\r\n        },\r\n        {\r\n          \"clientReservationId\": \"{{reserveId2}}\",\r\n          \"quantity\": 1.000,\r\n          \"pickLocation\": \"K-42-134-313-10\",\r\n          \"releaseDate\": \"2018-03-07T14:21:07\",\r\n          \"reservationDate\": \"2018-03-07T14:21:07\"\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders/orderlines?orderId={{ORDER_ID}}&orderLineId=20",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders",
-								"orderlines"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{ORDER_ID}}"
-								},
-								{
-									"key": "orderLineId",
-									"value": "20"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Orders for BFT",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var uuid =  require(\"uuid\")",
-									"var randomUuid = uuid.v4(); ",
-									"",
-									"pm.environment.set(\"idemotencyKey\", randomUuid.substring(12))"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Idempotency-Key",
-								"value": "{{idemotencyKey}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/releasableOrders?reservationType=BFT&numberOfOrders={{$randomInt}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"releasableOrders"
-							],
-							"query": [
-								{
-									"key": "reservationType",
-									"value": "BFT"
-								},
-								{
-									"key": "numberOfOrders",
-									"value": "{{$randomInt}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Orders for AKL",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Idempotency-Key",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/releasableOrders?reservationType=AKL&numberOfOrders={{$randomInt}}&workstationId=KPAQ103",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"releasableOrders"
-							],
-							"query": [
-								{
-									"key": "reservationType",
-									"value": "AKL"
-								},
-								{
-									"key": "numberOfOrders",
-									"value": "{{$randomInt}}"
-								},
-								{
-									"key": "workstationId",
-									"value": "KPAQ103"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Tour",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Idempotency-Key",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/tours?tourTypes=WEISS",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"tours"
-							],
-							"query": [
-								{
-									"key": "tourTypes",
-									"value": "WEISS"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Tour Confirmation",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Tour 1 does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"in_progress\",\r\n    \"cartId\": \"037\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/tours?tourId=1",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"tours"
-							],
-							"query": [
-								{
-									"key": "tourId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "HandlingUnit Start",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var randomInt = pm.variables.get(\"randomInt\");\r",
-									"\r",
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Picklist \" + randomInt + \" does not exist\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var randomInt = _.random(1,20000);",
-									"",
-									"pm.variables.set(\"randomInt\", randomInt);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Idempotency-Key",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"box\": \r\n    {\r\n        \"handlingUnitId\": \"LOXXITone144323242\",\r\n        \"startDate\": \"2018-03-07T17:18:02\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/picklistStarts?picklistId={{randomInt}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"picklistStarts"
-							],
-							"query": [
-								{
-									"key": "picklistId",
-									"value": "{{randomInt}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Order Priority Change",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.variables.set(\"priority\", _.random(0, 5));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Idempotency-Key",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"priority\": {{priority}}}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{ORDER_ID}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{ORDER_ID}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Order",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 204\", function () {\r",
-									"    pm.response.to.have.status(204);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Idempotency-Key",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{ORDER_ID}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{ORDER_ID}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Deleted Order - Verify Deleted Order",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"$orderId = pm.collectionVariables.get(\"ORDER_ID\");\r",
-									"\r",
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"    pm.expect(pm.response.json().message).to.eql(\"Order \" + $orderId + \" was deleted\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrlClient}}/orders?orderId={{ORDER_ID}}",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"orders"
-							],
-							"query": [
-								{
-									"key": "orderId",
-									"value": "{{ORDER_ID}}"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
-			"name": "Workstation",
-			"item": [
-				{
-					"name": "AKL Workstation logged in",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"loggedIn\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/workstations/kpaq101",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"workstations",
-								"kpaq101"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "AKL Workstation logged out",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"loggedOut\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/workstations/kpaq101",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"workstations",
-								"kpaq101"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Departure Notification",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Departure accepted.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"departure\": \"345233\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/workstations/kpaq101",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"workstations",
-								"kpaq101"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Arrival Notification",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Arrival accepted.\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"arrival\": \"345233\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/workstations/kpaq101",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"workstations",
-								"kpaq101"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Device",
-			"item": [
-				{
-					"name": "Device Update",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
-									"    pm.expect(pm.response.json().message).to.eql(\"Device bft024 not found\");",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"on\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrlClient}}/devices/bft024",
-							"host": [
-								"{{baseUrlClient}}"
-							],
-							"path": [
-								"devices",
-								"bft024"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "HealthCheck",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"API is up and running!\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{baseUrl}}/version",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"version"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"auth": {
@@ -3070,6 +2264,11 @@
 	],
 	"variable": [
 		{
+			"key": "host",
+			"value": "http://lx-c3-testing.heureka-solutions.com:8080",
+			"type": "string"
+		},
+		{
 			"key": "server",
 			"value": "10.99.10.120"
 		},
@@ -3086,16 +2285,16 @@
 			"value": "abc"
 		},
 		{
+			"key": "orderNumber",
+			"value": ""
+		},
+		{
 			"key": "clientId",
 			"value": "109"
 		},
 		{
-			"key": "ARTICLE_ID",
-			"value": ""
-		},
-		{
-			"key": "ORDER_ID",
-			"value": ""
+			"key": "defaultArticle",
+			"value": "566874"
 		}
 	]
 }
