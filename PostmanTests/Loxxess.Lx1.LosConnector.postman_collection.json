@@ -1003,7 +1003,7 @@
 			"name": "HandlingUnits",
 			"item": [
 				{
-					"name": "High priority cases",
+					"name": "High priority test cases",
 					"item": [
 						{
 							"name": "HU_1: Call request to create handlingUnits successfully",
@@ -1107,7 +1107,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{locationID}}",
 									"host": [
 										"{{host}}"
 									],
@@ -1120,7 +1120,7 @@
 									"query": [
 										{
 											"key": "handlingUnitId",
-											"value": "{{handlingID}}"
+											"value": "{{locationID}}"
 										}
 									]
 								}
@@ -2120,38 +2120,33 @@
 			"name": "Location",
 			"item": [
 				{
-					"name": "Get location information",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/losrestapi/clients/{{clientId}}/locations?locationId=handlingUnit6",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"losrestapi",
-								"clients",
-								"{{clientId}}",
-								"locations"
-							],
-							"query": [
-								{
-									"key": "locationId",
-									"value": "handlingUnit6"
-								}
-							]
+					"name": "Create handlingUnit and LocationID for endpoint Loc_1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.info(\"HU_1: Call request to create handlingUnits successfully\")",
+									"",
+									"pm.environment.set(\"handlingID\", \"autoHandlingID_\".concat(_.random(20,500)))",
+									"",
+									"pm.environment.set(\"locationID\", pm.environment.get(\"handlingID\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify create Handling successfully, status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Stocks",
-			"item": [
-				{
-					"name": "Create Stock with locationId",
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -2170,10 +2165,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"2181002\",\n            \"quantity\": 11111,\n            \"handlingUnit\": \"handlingUnit5\",\n            \"status\": \"ok\"\n        },\n        {\n            \"article\": \"2181003\",\n            \"quantity\": 11122,\n            \"handlingUnit\": \"handlingUnit4\",\n            \"status\": \"ok\"\n        }\n    ]\n}"
+							"raw": "{\n    \"status\": \"{{commonStatus}}\"\n}"
 						},
 						"url": {
-							"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId=autoHandlingID_113",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
 							"host": [
 								"{{host}}"
 							],
@@ -2181,12 +2176,12 @@
 								"losrestapi",
 								"clients",
 								"{{clientId}}",
-								"stocks"
+								"handlingUnits"
 							],
 							"query": [
 								{
-									"key": "locationId",
-									"value": "autoHandlingID_113"
+									"key": "handlingUnitId",
+									"value": "{{handlingID}}"
 								}
 							]
 						}
@@ -2194,12 +2189,34 @@
 					"response": []
 				},
 				{
-					"name": "GET stock information",
+					"name": "Loc_1: Get location information",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify create Handling successfully, status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId=handlingUnit5",
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/locations?locationId={{locationID}}",
 							"host": [
 								"{{host}}"
 							],
@@ -2207,17 +2224,1011 @@
 								"losrestapi",
 								"clients",
 								"{{clientId}}",
-								"stocks"
+								"locations"
 							],
 							"query": [
 								{
 									"key": "locationId",
-									"value": "handlingUnit5"
+									"value": "{{locationID}}"
 								}
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Loc_2: Cal request with locationID does NOT exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify get location does NOT exist, status code 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"const responsebody = pm.response.json();",
+									"let expectedErrorMessage = \"Location \" + pm.environment.get(\"randomString\") + \" does not exist\"",
+									"",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function randomString(length) {",
+									"    var result           = '';",
+									"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+									"    var charactersLength = characters.length;",
+									"    for ( var i = 0; i < length; i++ ) {",
+									"      result += characters.charAt(Math.floor(Math.random() * ",
+									" charactersLength));",
+									"   }",
+									"   return result;",
+									"}",
+									"pm.environment.set(\"randomString\", randomString(10));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/losrestapi/clients/{{clientId}}/locations?locationId={{randomString}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"losrestapi",
+								"clients",
+								"{{clientId}}",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "locationId",
+									"value": "{{randomString}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stocks",
+			"item": [
+				{
+					"name": "High priority test cases",
+					"item": [
+						{
+							"name": "Create handlingUnit and LocationID for endpoint Stock_1: Create Stock",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"HU_1: Call request to create handlingUnits successfully\")",
+											"",
+											"pm.environment.set(\"handlingID\", \"autoHandlingID_\".concat(_.random(20,500)))",
+											"",
+											"pm.environment.set(\"locationID\", pm.environment.get(\"handlingID\"));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify create Handling successfully, status code 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"{{commonStatus}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/handlingUnits?handlingUnitId={{handlingID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"handlingUnits"
+									],
+									"query": [
+										{
+											"key": "handlingUnitId",
+											"value": "{{handlingID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_1: Call request to create stock with all valid data",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_1: Call request to create stock with all valid data\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can add inventory for handing unit, status code 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody[0].status).to.eql(pm.environment.get(\"handlingUnitStatus\"))",
+											"});",
+											"",
+											"pm.test(\"Verify correct article\", function () {",
+											"    pm.expect(responsebody[0].articleId).to.eql(pm.environment.get(\"autoArticleID\"))",
+											"});",
+											"",
+											"pm.test(\"Verify correct handlingUnit\", function () {",
+											"    pm.expect(responsebody[0].loadingEquipmentId).to.eql(pm.environment.get(\"handlingID\"))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_7: Call request with existing “locationId” in DB",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_7: Call request with existing “locationId” in DB\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can get stock information, status code 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody[0].status).to.eql(pm.environment.get(\"handlingUnitStatus\"))",
+											"});",
+											"",
+											"pm.test(\"Verify correct article\", function () {",
+											"    pm.expect(responsebody[0].articleId).to.eql(pm.environment.get(\"autoArticleID\"))",
+											"});",
+											"",
+											"pm.test(\"Verify correct handlingUnit\", function () {",
+											"    pm.expect(responsebody[0].loadingEquipmentId).to.eql(pm.environment.get(\"handlingID\"))",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Verify invalid cases",
+					"item": [
+						{
+							"name": "Stock_2: Call request with location is NOT existed",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_2: Call request with location is NOT existed\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can NOT get stock information with invalid locationID, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Location \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_3: Call request with lacking of clientId",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_3: Call request with lacking of clientId\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can NOT get stock information with invalid locationID, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Not Found\";",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.error).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{emptyClientID}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{emptyClientID}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_3: Call request with locationID is empty",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_3: Call request with locationID is empty\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when calling request with locationID is empty, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Location \" + pm.environment.get(\"emptyLocationID\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{emptyLocationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{emptyLocationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_3: Call request with quantity field is missing in the body",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_3: Call request with quantity field is missing in the body\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when calling request with locationID is empty, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"stocks[0].quantity must not be null\";",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.body[0]).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_3: Call request with handlingUnit field is missing in the body",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_3: Call request with handlingUnit field is missing in the body\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when calling request with locationID is empty, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = [\"stocks[0].handlingUnit must not be null\",",
+											"        \"stocks[0] invalid data handlingUnit must not be empty when 'quantity' is positive\"];",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_4: Call request with duplicate ArticleId",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_4: Call request with duplicate ArticleId\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when calling request with locationID is empty, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(409);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = [\"article should not be duplicated\"];",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        },\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_5: Call request with ArticleId is NOT existed",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_4: Call request with duplicate ArticleId\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when calling request with articleID is NOT exist, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Article \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{randomString}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_9: Call request with locationId does NOT have any stock",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_9: Call request with locationId does NOT have any stock\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can get stock empty, status code 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedResponseBody = []",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody).to.eql(expectedResponseBody)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{fixedEmptyHandlingUnitID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{fixedEmptyHandlingUnitID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock_8: Call request with locationId does NOT exist Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_8: Call request with locationId does NOT exist\")",
+											"",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can NOT get stock information via loactionID does not exist, status code 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Location \" + pm.environment.get(\"randomString\") + \" does not exist\"",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
