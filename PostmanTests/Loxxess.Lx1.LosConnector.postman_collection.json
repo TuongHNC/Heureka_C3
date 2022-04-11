@@ -276,7 +276,7 @@
 					"name": "Verify invalid case",
 					"item": [
 						{
-							"name": "Art_3: Call Create article request with missing madatory fields",
+							"name": "3.1.1(1) - Call Create article request with missing madatory fields",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -346,7 +346,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_4: Call request with mandatory fields is null",
+							"name": "3.1.1(2) - Call request with mandatory fields is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -416,7 +416,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_4: Call request with mandatory fields is empty",
+							"name": "3.1.1(3) - Call request with mandatory fields is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -486,7 +486,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_5: Call request with plannedSalesPerWeek has large number",
+							"name": "3.1.1(4) - Call request with plannedSalesPerWeek has large number",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -558,7 +558,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_5: Call request with minimumIncomingAmount has large number",
+							"name": "3.1.1(5) - Call request with minimumIncomingAmount has large number",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -630,7 +630,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_6: Verify the status only allow for string “active” or “inactive”",
+							"name": "3.1.1(6) - Verify the status only allow for string “active” or “inactive”",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -716,7 +716,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_7: Verify cannot send request with articleID is empty",
+							"name": "3.1.1(7) - Verify cannot send request with articleID is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -786,7 +786,7 @@
 							"response": []
 						},
 						{
-							"name": "Art_9: Verify can NOT get the article information with articleID is NOT exist in DB",
+							"name": "3.1.2(1) - Verify can NOT get the article information with articleID is NOT exist in DB",
 							"event": [
 								{
 									"listen": "test",
@@ -1163,7 +1163,7 @@
 					"name": "Verify invalid cases",
 					"item": [
 						{
-							"name": "HU_2: Call request to create handlingUnits with handlingUnitId is empty",
+							"name": "3.2.1(1) - Call request to create handlingUnits with handlingUnitId is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1236,7 +1236,7 @@
 							"response": []
 						},
 						{
-							"name": "HU_3: Call request with status  Is NOT “active” or “inactive”",
+							"name": "3.2.1(2) - Call request with status  Is NOT “active” or “inactive”",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1309,7 +1309,7 @@
 							"response": []
 						},
 						{
-							"name": "HU_5: Call request to create handlingUnits with handlingUnitId is empty",
+							"name": "3.2.2(1) - Call request to create handlingUnits with handlingUnitId is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1384,7 +1384,7 @@
 							"response": []
 						},
 						{
-							"name": "HU_5: Call request to create handlingUnits with handlingUnitId is NOT exist in DB",
+							"name": "3.2.2(2) - Call request to create handlingUnits with handlingUnitId is NOT exist in DB",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1472,7 +1472,7 @@
 							"response": []
 						},
 						{
-							"name": "HU_6: Call request with status with is NOT “active” or “inactive”",
+							"name": "3.2.2(3) - Call request with status with is NOT “active” or “inactive”",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1560,7 +1560,7 @@
 							"response": []
 						},
 						{
-							"name": "HU_8: Call request with HandlingUnit is NOT exist in DB",
+							"name": "3.2.3(1) - Call request with HandlingUnit is NOT exist in DB",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1628,7 +1628,7 @@
 							"response": []
 						},
 						{
-							"name": "HU_10: Call request to DELETE Handling with ID is NOT exist in DB",
+							"name": "3.2.4(1) - Call request to DELETE Handling with ID is NOT exist in DB",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -1913,7 +1913,7 @@
 					"name": "Verify invalid cases",
 					"item": [
 						{
-							"name": "Stock_2: Call request with location is NOT existed",
+							"name": "3.3.1(1) - Call request with location is NOT existed",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2004,7 +2004,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_3: Call request with lacking of clientId",
+							"name": "3.3.1(2) - Call request with lacking of clientId",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2083,7 +2083,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_3: Call request with locationID is empty",
+							"name": "3.3.1(3) - Call request with locationID is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2162,7 +2162,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_3: Call request with quantity field is missing in the body",
+							"name": "3.3.1(4) - Call request with quantity field is missing in the body",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2240,7 +2240,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_3: Call request with handlingUnit field is missing in the body",
+							"name": "3.3.1(5) - Call request with handlingUnit field is missing in the body",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2319,7 +2319,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_4: Call request with duplicate ArticleId",
+							"name": "3.3.1(6) - Call request with duplicate ArticleId",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2397,7 +2397,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_5: Call request with ArticleId is NOT existed",
+							"name": "3.3.1(7) - Call request with ArticleId is NOT existed",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2487,7 +2487,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_9: Call request with locationId does NOT have any stock",
+							"name": "3.3.2(1) - Call request with locationId does NOT have any stock",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2543,7 +2543,7 @@
 							"response": []
 						},
 						{
-							"name": "Stock_8: Call request with locationId does NOT exist Copy",
+							"name": "3.3.2(2) - Call request with locationId does NOT exist",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2691,7 +2691,7 @@
 							"response": []
 						},
 						{
-							"name": "(Wait until this API back again) 3.4.1 - Update Location status",
+							"name": "[DO NOT RUN until this API back again] 3.4.1 - Update Location status",
 							"request": {
 								"method": "PATCH",
 								"header": [
@@ -2713,7 +2713,7 @@
 									"raw": "{\n    \"status\": \"ok\"\n}"
 								},
 								"url": {
-									"raw": "{{host}}/clients/{{clientId}}/locations?locationId=autoHandlingID_122",
+									"raw": "{{host}}/clients/{{clientId}}/locations?locationId={{emptyLocationID}}",
 									"host": [
 										"{{host}}"
 									],
@@ -2725,7 +2725,7 @@
 									"query": [
 										{
 											"key": "locationId",
-											"value": "autoHandlingID_122"
+											"value": "{{emptyLocationID}}"
 										}
 									]
 								}
@@ -2869,7 +2869,7 @@
 										"exec": [
 											"var orderLinesArray = [];",
 											"",
-											"for (var _i = 1; _i <= 6; _i++) {",
+											"for (var _i = 1; _i <= 5; _i++) {",
 											"    var orderLine = {",
 											"        line: _i.toString(),",
 											"        article: pm.environment.get(\"autoArticleID\"),",
@@ -2975,7 +2975,7 @@
 									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
 								},
 								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId=autoOrderID_208",
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
 									"host": [
 										"{{host}}"
 									],
@@ -2988,7 +2988,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "autoOrderID_208"
+											"value": "{{orderID}}"
 										}
 									]
 								}
@@ -3137,7 +3137,142 @@
 							"response": []
 						},
 						{
-							"name": "[Need automate] 3.5.4 - Update",
+							"name": "3.5.2 - [Precondition] Create OrderID again",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var orderLinesArray = [];",
+											"",
+											"for (var _i = 1; _i <= 5; _i++) {",
+											"    var orderLine = {",
+											"        line: _i.toString(),",
+											"        article: pm.environment.get(\"autoArticleID\"),",
+											"        quantity: _.random(1,100)",
+											"    };",
+											"",
+											"    orderLinesArray.push(orderLine);",
+											"}",
+											"pm.environment.set(\"orderLine\", JSON.stringify(orderLinesArray));",
+											"",
+											"var time = require('moment');",
+											"var knownTime = time().subtract(4, 'days');",
+											"var futureTime = time().add(4, 'days');",
+											"pm.environment.set(\"orderID\", \"autoOrderID_\".concat(_.random(20,500)))",
+											"",
+											"pm.environment.set(\"knownDate\", knownTime.format());",
+											"pm.environment.set(\"shippingDeadlineDate\", futureTime.format());",
+											"pm.environment.set(\"loadingDeadlineDate\", futureTime.format());",
+											"pm.environment.set(\"orderPriority\", _.random(1,5));",
+											"",
+											"let packageTypeArray = [\"dm146\",\"dm125\",\"dm104\",\"dm084\",\"dm081\",\"dm069\",\"dm058\",\"dm046\",\"dm42n\",\"dm036\",\"dm30n\",\"dm024\",\"dm015\",\"dm012\",\"dm09n\",\"dm006\",\"dm007\",\"dm001\",\"dmadka\"];",
+											"pm.environment.set(\"packageType\", packageTypeArray[Math.floor(Math.random() * packageTypeArray.length)]);",
+											"",
+											"let orderTypeArray = [\"RBLV\",\"YNOHEXW\",\"YNOHNEXW\",\"YUMX\"];",
+											"pm.environment.set(\"orderType\", orderTypeArray[Math.floor(Math.random() * orderTypeArray.length)]);",
+											"",
+											"let carrierArray = [\"A1\",\"A2\",\"A3\",\"B1\",\"B2\"];",
+											"pm.environment.set(\"carrier\", carrierArray[Math.floor(Math.random() * carrierArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Create/Update order was accepted.\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"var clientId = pm.environment.get(\"clientId\");",
+											"var orderID = pm.environment.get(\"orderID\");",
+											"var knownDate = pm.environment.get(\"knownDate\");",
+											"var loadingDeadlineDate = pm.environment.get(\"loadingDeadlineDate\");",
+											"var orderPriority = pm.environment.get(\"orderPriority\");",
+											"var carrier = pm.environment.get(\"carrier\");",
+											"var orderLine = JSON.parse(pm.environment.get(\"orderLine\"));",
+											"",
+											"pm.test(\"ClientID is correct\", function () {",
+											"    pm.expect(responsebody.clientId).to.eql(clientId.toString());",
+											"});",
+											"",
+											"pm.test(\"order Id is correct\", function () {",
+											"    pm.expect(responsebody.orderId).to.eql(orderID);",
+											"});",
+											"",
+											"pm.test(\"known Date is correct\", function () {",
+											"    let actualKnownDate = new Date(responsebody.knownDate);",
+											"    let expectedKnownDate = new Date(knownDate);",
+											"",
+											"    pm.expect(actualKnownDate.getTime()).to.eql(expectedKnownDate.getTime());",
+											"});",
+											"",
+											"pm.test(\"loading DeadlineDate is correct\", function () {",
+											"    let actualLoadingDeadlineDate = new Date(responsebody.loadingDeadlineDate);",
+											"    let expectedLoadingDeadlineDate = new Date(loadingDeadlineDate)",
+											"",
+											"    pm.expect(actualLoadingDeadlineDate.getTime()).to.eql(expectedLoadingDeadlineDate.getTime());",
+											"});",
+											"",
+											"pm.test(\"priority is correct\", function () {",
+											"    pm.expect(responsebody.priority).to.eql(orderPriority);",
+											"});",
+											"",
+											"pm.test(\"orderlines is correct\", function () {",
+											"    pm.expect(JSON.stringify(responsebody.orderlines)).to.eql(JSON.stringify(orderLine));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.4 - Update",
 							"request": {
 								"method": "PATCH",
 								"header": [
@@ -3159,7 +3294,7 @@
 									"raw": "{\n  \"priority\": 2,\n  \"status\": \"reset\"\n}"
 								},
 								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId=autoOrderID_208",
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
 									"host": [
 										"{{host}}"
 									],
@@ -3172,7 +3307,7 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "autoOrderID_208"
+											"value": "{{orderID}}"
 										}
 									]
 								}
@@ -3180,13 +3315,13 @@
 							"response": []
 						},
 						{
-							"name": "3.5.5 - Update Order line",
+							"name": "[Need automate] 3.5.5 - Update Order line",
 							"request": {
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"2181986003\",\n            \"quantity\": 10,\n            \"pickLocation\": \"autoHandlingID_123\"\n        },\n        {\n            \"clientReservationId\": \"2181986004\",\n            \"quantity\": 2,\n            \"pickLocation\": \"autoHandlingID_123\"\n        }\n    ]\n}",
+									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"21819860013\",\n            \"quantity\": 1,\n            \"pickLocation\": \"autoHandlingID_112\"\n        },\n        {\n            \"clientReservationId\": \"21819860014\",\n            \"quantity\": 2,\n            \"pickLocation\": \"autoHandlingID_112\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3194,7 +3329,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId=autoOrderID_208&line=1",
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
 									"host": [
 										"{{host}}"
 									],
@@ -3208,11 +3343,55 @@
 									"query": [
 										{
 											"key": "orderId",
-											"value": "autoOrderID_208"
+											"value": "{{orderID}}"
 										},
 										{
 											"key": "line",
 											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.6 - Delete Order Line",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can delete order line, status code 200\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "2"
 										}
 									]
 								}
@@ -3225,7 +3404,7 @@
 					"name": "Verify invalid cases",
 					"item": [
 						{
-							"name": "Order_2: Verify the error response when sending request with knownDate is null",
+							"name": "3.5.2(1): Verify the error response when sending request with knownDate is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3298,7 +3477,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with knownDate is empty",
+							"name": "3.5.2(2): Verify the error response when sending request with knownDate is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3371,7 +3550,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with shippingDeadlineDate is null",
+							"name": "3.5.2(3): Verify the error response when sending request with shippingDeadlineDate is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3444,7 +3623,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with shippingDeadlineDate is empty",
+							"name": "3.5.2(4): Verify the error response when sending request with shippingDeadlineDate is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3517,7 +3696,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with orderType is null",
+							"name": "3.5.2(5): Verify the error response when sending request with orderType is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3590,7 +3769,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with orderType is empty",
+							"name": "3.5.2(6): Verify the error response when sending request with orderType is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3663,7 +3842,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with carrier is null",
+							"name": "3.5.2(7): Verify the error response when sending request with carrier is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3736,7 +3915,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with carrier is empty",
+							"name": "3.5.2(8): Verify the error response when sending request with carrier is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3809,7 +3988,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with maxPackageWeight is nul",
+							"name": "3.5.2(9): Verify the error response when sending request with maxPackageWeight is nul",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3882,7 +4061,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with maxPackageWeight is empty",
+							"name": "3.5.2(10): Verify the error response when sending request with maxPackageWeight is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3955,7 +4134,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with line is null",
+							"name": "3.5.2(11): Verify the error response when sending request with line is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4028,7 +4207,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with line is empty",
+							"name": "3.5.2(12): Verify the error response when sending request with line is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4101,7 +4280,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with article is null",
+							"name": "3.5.2(13): Verify the error response when sending request with article is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4174,7 +4353,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with article is empty",
+							"name": "3.5.2(14): Verify the error response when sending request with article is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4247,7 +4426,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with quantity is null",
+							"name": "3.5.2(15): Verify the error response when sending request with quantity is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4320,7 +4499,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_2: Verify the error response when sending request with quantity is empty",
+							"name": "3.5.2(16): Verify the error response when sending request with quantity is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4393,7 +4572,7 @@
 							"response": []
 						},
 						{
-							"name": "Order_3: Verify behavior when sending request with “packageType” does NOT exist in database",
+							"name": "3.5.2(17): Verify behavior when sending request with “packageType” does NOT exist in database",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4474,6 +4653,662 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "3.5.1(1) - Verify error message when sending request with get OrderId is NOT exist in DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with get OrderId is NOT exist in DB\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"let expectedErrorMessage = \"Order \" + pm.environment.get(\"randomString\") + \" does not exist for client 109\";",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.3(1) - Verify error messsage when trying to delete orderId is NOT exist in DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error messsage when trying to delete orderId is NOT exist in DB\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"let expectedErrorMessage = \"Order \" + pm.environment.get(\"randomString\") + \" does not exist for client \" + pm.environment.get(\"clientId\");",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.4(1) - Verify error message when sending request with orderId is NOT exit in DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with orderId is NOT exit in DB\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"let expectedErrorMessage = \"Order \" + pm.environment.get(\"randomString\") + \" does not exist for client \" + pm.environment.get(\"clientId\");",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"priority\": 2,\n  \"status\": \"reset\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{randomString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{randomString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.4(2) - Verify error message when sending request with status is NOT reset or empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with status is NOT reset or empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"status must be empty or 'reset'\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"priority\": 1,\n  \"status\": \"{{randomString}}\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.4(3) - Verify error message when sending request with priority is NOT number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with priority is NOT number, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"priority must be number\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"priority\": \"{{randomString}}\",\n  \"status\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.5(1) - Verify error message if clientReservationId is empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if clientReservationId is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectErrorMessage = [\"reservations[0].clientReservationId must not be blank\"]",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"ClientID is correct\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"\",\n            \"quantity\": 2,\n            \"pickLocation\": \"{{locationID}}\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.5(2) - Verify error message if pickLocation is empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if pickLocation is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectErrorMessage = [\"reservations[0] Either pickLocation or handlingUnit is not empty\"]",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"ClientID is correct\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"2181986012\",\n            \"quantity\": 1,\n            \"pickLocation\": \"\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.5(3) - Verify error message if quatity is not positive number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if quatity is not positive number\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectErrorMessage = [\"Quantity should be positive number\"]",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"ClientID is correct\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"1\",\n            \"quantity\": 0.123,\n            \"pickLocation\": \"{{locationID}}\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.5(4) - Verify error message if clientReservationId is already used in DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if quatity is not positive number\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectErrorMessage = [\"clientReservationId is already used by another oderID\"]",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"ClientID is correct\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"2181986001\",\n            \"quantity\": 0.123,\n            \"pickLocation\": \"{{locationID}}\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.6(1) - Verify error message if deleting order NOT existed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can delete order line, status code 200\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"let expectedErrorMessage = \"Order \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{randomString}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{randomString}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.6(2) - Verify error message if line is not existed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if line is not existed, status code 404 Not Found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"let expectedErrorMessage = \"Order line 0 does not exist\";",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=0",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -4488,9 +5323,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/losrestapi/clients/{{clientId}}/releasableOrders?reservationType={reservationType}&numberOfOrders={numberOfOrders}&workstationId={workstationId}",
+							"raw": "{{url}}/losrestapi/clients/{{clientId}}/releasableOrders?reservationType={reservationType}&numberOfOrders={numberOfOrders}&workstationId={workstationId}",
 							"host": [
-								"{{host}}"
+								"{{url}}"
 							],
 							"path": [
 								"losrestapi",
@@ -4522,41 +5357,302 @@
 			"name": "3.7 - PickListStart Controller",
 			"item": [
 				{
-					"name": "[Need automate] 3.7.1 -",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "ApiKey",
-								"value": "ourSecretApiKey"
+					"name": "High priority test case",
+					"item": [
+						{
+							"name": "[Need automate] 3.7.1 - Pick",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"box\": \n    {\n        \"picklistId\": \"pick-11361672-002\",\n        \"handlingUnitId\": \"{{handlingID}}\",\n        \"startDate\": \"2018-03-07T17:18:02\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistStarts",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistStarts"
+									]
+								}
 							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"box\": \n    {\n        \"picklistId\": \"223425343-01\",\n        \"handlingUnitId\": \"autoHandlingID_122\",\n        \"startDate\": \"2018-03-07T17:18:02\"\n    }\n}"
-						},
-						"url": {
-							"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistStarts",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"losrestapi",
-								"clients",
-								"{{clientId}}",
-								"picklistStarts"
-							]
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "Verify invalid cases",
+					"item": [
+						{
+							"name": "3.7.1 - Verify error message when the picklistId is enpty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when the picklistId is enpty.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"var expectedErrorMessage = [\"box.picklistId must not be empty\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message when the picklistId is enpty\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"box\": \n    {\n        \"picklistId\": \"\",\n        \"handlingUnitId\": \"{{handlingID}}\",\n        \"startDate\": \"2018-03-07T17:18:02\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistStarts",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistStarts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.7.1 - Verify error message when the picklistId is NOT existed in DB",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when the picklistId is enpty.\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"var expectedErrorMessage = \"Picklist \" + pm.environment.get(\"randomString\") + \" does not exist\";",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message when the picklistId is enpty\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"box\": \n    {\n        \"picklistId\": \"{{randomString}}\",\n        \"handlingUnitId\": \"{{handlingID}}\",\n        \"startDate\": \"2018-03-07T17:18:02\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistStarts",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistStarts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.7.1 - Verify error message when the handlingUnitId is enpty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when the handlingUnitId is enpty.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"var expectedErrorMessage = [\"box.handlingUnitId must not be empty\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message when the picklistId is enpty\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"box\": \n    {\n        \"picklistId\": \"pick-11361672-002\",\n        \"handlingUnitId\": \"\",\n        \"startDate\": \"2018-03-07T17:18:02\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistStarts",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistStarts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.7.1 - Verify error message when the startDate is enpty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when the startDate is enpty.\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"var expectedErrorMessage = [\"box.startDate must not be null\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message when the picklistId is enpty\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"box\": \n    {\n        \"picklistId\": \"pick-11361672-002\",\n        \"handlingUnitId\": \"{{handlingID}}\",\n        \"startDate\": \"\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistStarts",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistStarts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -4583,7 +5679,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"223425343-01\",\n            \"clientReservationId\": \"20210401121442213\",\n            \"pickStartDate\": \"2018-03-07T17:18:02.234\",\n            \"pickEndDate\": \"2024-03-07T17:18:37.322\",\n            \"picked\": 3.000,\n            \"pickerId\": \"LX2342\"\n        }\n}"
+							"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"pick-11361672-004\",\n            \"clientReservationId\": \"21819860010\",\n            \"pickStartDate\": \"2018-03-07T17:18:02.234\",\n            \"pickEndDate\": \"2024-03-07T17:18:37.322\",\n            \"picked\": 2,\n            \"pickerId\": \"pickkerId-2\"\n        }\n}"
 						},
 						"url": {
 							"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
@@ -4604,7 +5700,135 @@
 		},
 		{
 			"name": "3.9 - Tour Controller",
-			"item": []
+			"item": [
+				{
+					"name": "High priority test cases",
+					"item": [
+						{
+							"name": "3.9.1 - GET",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Idempotency-Key",
+										"value": "qzO9hA7Vh54qwOQY"
+									},
+									{
+										"key": "Content-Type",
+										"value": "applica-tion/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/losrestapi/clients/{{clientId}}/tours?tourTypes=GELB",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"tours"
+									],
+									"query": [
+										{
+											"key": "tourTypes",
+											"value": "GELB"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.9.2 - PATCH",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"in_progress\",\n    \"cartId\": \"037\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/tours?tourId=1334",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"tours"
+									],
+									"query": [
+										{
+											"key": "tourId",
+											"value": "1334"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3.12 - version-controller",
+			"item": [
+				{
+					"name": "3.12.1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "ApiKey",
+								"value": "ourSecretApiKey"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/losrestapi/version",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"losrestapi",
+								"version"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
