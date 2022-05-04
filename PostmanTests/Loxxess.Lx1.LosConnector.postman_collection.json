@@ -297,10 +297,10 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"temperatureZone must not be empty\",\"height must not be null\",\"width must not be null\",\"category must not be empty\"];",
+											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"height must not be null\",\"width must not be null\",\"category must not be blank\",\"temperatureZone must not be blank\"];",
 											"",
 											"pm.test(\"Verify the error message notice that cannot send request with lacking mandatory fields\", function () {",
-											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"    pm.expect(responsebody.body.sort).to.eql(expectedErrorMessage.sort)",
 											"});"
 										],
 										"type": "text/javascript"
@@ -367,10 +367,10 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"temperatureZone must not be empty\",\"height must not be null\",\"width must not be null\",\"category must not be empty\"];",
+											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"height must not be null\",\"category must not be blank\",\"width must not be null\",\"temperatureZone must not be blank\"];",
 											"",
 											"pm.test(\"Verify the error message notice that all mandatory fields could not be null or empty\", function () {",
-											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"    pm.expect(responsebody.body.sort).to.eql(expectedErrorMessage.sort)",
 											"});"
 										],
 										"type": "text/javascript"
@@ -437,10 +437,10 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"var expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"temperatureZone must not be empty\",\"height must not be null\",\"width must not be null\",\"category must not be empty\"];",
+											"const expectedErrorMessage = [\"weight must not be null\",\"length must not be null\",\"height must not be null\",\"width must not be null\",\"category must not be blank\",\"temperatureZone must not be blank\"];",
 											"",
 											"pm.test(\"Verify the error message notice that all mandatory fields could not be null or empty\", function () {",
-											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
+											"    pm.expect(responsebody.body.sort).to.eql(expectedErrorMessage.sort)",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1793,11 +1793,11 @@
 											"});",
 											"",
 											"pm.test(\"Verify correct article\", function () {",
-											"    pm.expect(responsebody[0].articleId).to.eql(pm.environment.get(\"autoArticleID\"))",
+											"    pm.expect(responsebody[0].article).to.eql(pm.environment.get(\"autoArticleID\"))",
 											"});",
 											"",
 											"pm.test(\"Verify correct handlingUnit\", function () {",
-											"    pm.expect(responsebody[0].loadingEquipmentId).to.eql(pm.environment.get(\"handlingID\"))",
+											"    pm.expect(responsebody[0].handlingUnit).to.eql(pm.environment.get(\"handlingID\"))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1868,15 +1868,15 @@
 											"const responsebody = pm.response.json();",
 											"",
 											"pm.test(\"Verify handling Unit status\", function () {",
-											"    pm.expect(responsebody[0].status).to.eql(pm.environment.get(\"handlingUnitStatus\"))",
+											"    pm.expect(responsebody.stocks[0].status).to.eql(pm.environment.get(\"handlingUnitStatus\"))",
 											"});",
 											"",
 											"pm.test(\"Verify correct article\", function () {",
-											"    pm.expect(responsebody[0].articleId).to.eql(pm.environment.get(\"autoArticleID\"))",
+											"    pm.expect(responsebody.stocks[0].article).to.eql(pm.environment.get(\"autoArticleID\"))",
 											"});",
 											"",
 											"pm.test(\"Verify correct handlingUnit\", function () {",
-											"    pm.expect(responsebody[0].loadingEquipmentId).to.eql(pm.environment.get(\"handlingID\"))",
+											"    pm.expect(responsebody.stocks[0].handlingUnit).to.eql(pm.environment.get(\"handlingID\"))",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2266,8 +2266,7 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = [\"stocks[0].handlingUnit must not be null\",",
-											"        \"stocks[0] invalid data handlingUnit must not be empty when 'quantity' is positive\"];",
+											"let expectedErrorMessage = [\"stocks[0].handlingUnit must not be blank\"];",
 											"",
 											"pm.test(\"Verify handling Unit status\", function () {",
 											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
@@ -2340,12 +2339,12 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Verify error message when calling request with locationID is empty, status code 404 Not Found\", function () {",
-											"    pm.response.to.have.status(409);",
+											"    pm.response.to.have.status(400);",
 											"});",
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = [\"article should not be duplicated\"];",
+											"let expectedErrorMessage = [\"Duplicated value for article\"];",
 											"",
 											"pm.test(\"Verify handling Unit status\", function () {",
 											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
@@ -2487,6 +2486,249 @@
 							"response": []
 						},
 						{
+							"name": "3.3.1(8) - Verify error message when sending request with quantity has large number",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_1: Call request to create stock with all valid data\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with quantity has large number, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"stocks[0].quantity must be less than or equal to 1000000000000\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": 1112211111111111111,\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.3.1(9) - Verify error message when seding request with duplicate articleId",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_1: Call request to create stock with all valid data\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"let statusArray = [\"ok\",\"nio\"];",
+											"pm.environment.set(\"handlingUnitStatus\", statusArray[Math.floor(Math.random() * statusArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when seding request with duplicate articleId, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"Duplicated value for article\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        },\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{handlingUnitStatus}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.3.1(10) -Verify error message when sending request with status is INVALID",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.info(\"Stock_1: Call request to create stock with all valid data\")",
+											"",
+											"pm.environment.set(\"quantity\", _.random(1,50));",
+											"",
+											"function randomString(length) {",
+											"    var result           = '';",
+											"    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+											"    var charactersLength = characters.length;",
+											"    for ( var i = 0; i < length; i++ ) {",
+											"      result += characters.charAt(Math.floor(Math.random() * ",
+											" charactersLength));",
+											"   }",
+											"   return result;",
+											"}",
+											"pm.environment.set(\"randomString\", randomString(10));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with status is INVALID, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"stocks[0] status must be 'ok' or 'nio'\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"stocks\": [\n        {\n            \"article\": \"{{autoArticleID}}\",\n            \"quantity\": {{quantity}},\n            \"handlingUnit\": \"{{handlingID}}\",\n            \"status\": \"{{randomString}}\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/stocks?locationId={{locationID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"stocks"
+									],
+									"query": [
+										{
+											"key": "locationId",
+											"value": "{{locationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "3.3.2(1) - Call request with locationId does NOT have any stock",
 							"event": [
 								{
@@ -2502,16 +2744,16 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Verify can get stock empty, status code 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Call request with locationId does NOT have any stock, status code 200\", function () {",
+											"    pm.response.to.have.status(404);",
 											"});",
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedResponseBody = []",
+											"let expectedResponseBody = \"Location IDDoesNotHaveInventory does not exist\"",
 											"",
 											"pm.test(\"Verify handling Unit status\", function () {",
-											"    pm.expect(responsebody).to.eql(expectedResponseBody)",
+											"    pm.expect(responsebody.message).to.eql(expectedResponseBody)",
 											"});"
 										],
 										"type": "text/javascript"
@@ -2867,13 +3109,15 @@
 									"listen": "prerequest",
 									"script": {
 										"exec": [
+											"pm.environment.set(\"quantity\", _.random(1,100));",
+											"",
 											"var orderLinesArray = [];",
 											"",
-											"for (var _i = 1; _i <= 5; _i++) {",
+											"for (var _i = 1; _i <= 1; _i++) {",
 											"    var orderLine = {",
 											"        line: _i.toString(),",
 											"        article: pm.environment.get(\"autoArticleID\"),",
-											"        quantity: _.random(1,100)",
+											"        quantity: pm.environment.get(\"quantity\")",
 											"    };",
 											"",
 											"    orderLinesArray.push(orderLine);",
@@ -3085,6 +3329,182 @@
 							"response": []
 						},
 						{
+							"name": "3.5.5 - Update Order line",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"clientReservationId\", _.random(20,500));"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can Update Order Line.\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(String(responsebody.orderlineReservations[0].clientReservationId)).to.eql(String(pm.environment.get(\"clientReservationId\")));",
+											"});",
+											"",
+											"pm.test(\"quantity is correct\", function () {",
+											"    pm.expect(responsebody.orderlineReservations[0].quantity).to.eql(pm.environment.get(\"quantity\"));",
+											"});",
+											"",
+											"pm.test(\"pickLocation is correct\", function () {",
+											"    pm.expect(responsebody.orderlineReservations[0].pickLocation).to.eql(pm.environment.get(\"locationID\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"{{clientReservationId}}\",\n            \"quantity\": {{quantity}},\n            \"pickLocation\": \"{{locationID}}\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.4 - Update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify Patch successfully.\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"priority\": 2,\n  \"status\": \"reset\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.6 - Delete Order Line",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can delete order line, status code 200\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders",
+										"orderlines"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										},
+										{
+											"key": "line",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "3.5.3 - Verify can call Delete request with correct Order (Order_9)",
 							"event": [
 								{
@@ -3130,268 +3550,6 @@
 										{
 											"key": "orderId",
 											"value": "{{orderID}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3.5.2 - [Precondition] Create OrderID again",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"var orderLinesArray = [];",
-											"",
-											"for (var _i = 1; _i <= 5; _i++) {",
-											"    var orderLine = {",
-											"        line: _i.toString(),",
-											"        article: pm.environment.get(\"autoArticleID\"),",
-											"        quantity: _.random(1,100)",
-											"    };",
-											"",
-											"    orderLinesArray.push(orderLine);",
-											"}",
-											"pm.environment.set(\"orderLine\", JSON.stringify(orderLinesArray));",
-											"",
-											"var time = require('moment');",
-											"var knownTime = time().subtract(4, 'days');",
-											"var futureTime = time().add(4, 'days');",
-											"pm.environment.set(\"orderID\", \"autoOrderID_\".concat(_.random(20,500)))",
-											"",
-											"pm.environment.set(\"knownDate\", knownTime.format());",
-											"pm.environment.set(\"shippingDeadlineDate\", futureTime.format());",
-											"pm.environment.set(\"loadingDeadlineDate\", futureTime.format());",
-											"pm.environment.set(\"orderPriority\", _.random(1,5));",
-											"",
-											"let packageTypeArray = [\"dm146\",\"dm125\",\"dm104\",\"dm084\",\"dm081\",\"dm069\",\"dm058\",\"dm046\",\"dm42n\",\"dm036\",\"dm30n\",\"dm024\",\"dm015\",\"dm012\",\"dm09n\",\"dm006\",\"dm007\",\"dm001\",\"dmadka\"];",
-											"pm.environment.set(\"packageType\", packageTypeArray[Math.floor(Math.random() * packageTypeArray.length)]);",
-											"",
-											"let orderTypeArray = [\"RBLV\",\"YNOHEXW\",\"YNOHNEXW\",\"YUMX\"];",
-											"pm.environment.set(\"orderType\", orderTypeArray[Math.floor(Math.random() * orderTypeArray.length)]);",
-											"",
-											"let carrierArray = [\"A1\",\"A2\",\"A3\",\"B1\",\"B2\"];",
-											"pm.environment.set(\"carrier\", carrierArray[Math.floor(Math.random() * carrierArray.length)]);"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Create/Update order was accepted.\", function () {",
-											"    pm.response.to.have.status(201);",
-											"});",
-											"",
-											"const responsebody = pm.response.json();",
-											"",
-											"var clientId = pm.environment.get(\"clientId\");",
-											"var orderID = pm.environment.get(\"orderID\");",
-											"var knownDate = pm.environment.get(\"knownDate\");",
-											"var loadingDeadlineDate = pm.environment.get(\"loadingDeadlineDate\");",
-											"var orderPriority = pm.environment.get(\"orderPriority\");",
-											"var carrier = pm.environment.get(\"carrier\");",
-											"var orderLine = JSON.parse(pm.environment.get(\"orderLine\"));",
-											"",
-											"pm.test(\"ClientID is correct\", function () {",
-											"    pm.expect(responsebody.clientId).to.eql(clientId.toString());",
-											"});",
-											"",
-											"pm.test(\"order Id is correct\", function () {",
-											"    pm.expect(responsebody.orderId).to.eql(orderID);",
-											"});",
-											"",
-											"pm.test(\"known Date is correct\", function () {",
-											"    let actualKnownDate = new Date(responsebody.knownDate);",
-											"    let expectedKnownDate = new Date(knownDate);",
-											"",
-											"    pm.expect(actualKnownDate.getTime()).to.eql(expectedKnownDate.getTime());",
-											"});",
-											"",
-											"pm.test(\"loading DeadlineDate is correct\", function () {",
-											"    let actualLoadingDeadlineDate = new Date(responsebody.loadingDeadlineDate);",
-											"    let expectedLoadingDeadlineDate = new Date(loadingDeadlineDate)",
-											"",
-											"    pm.expect(actualLoadingDeadlineDate.getTime()).to.eql(expectedLoadingDeadlineDate.getTime());",
-											"});",
-											"",
-											"pm.test(\"priority is correct\", function () {",
-											"    pm.expect(responsebody.priority).to.eql(orderPriority);",
-											"});",
-											"",
-											"pm.test(\"orderlines is correct\", function () {",
-											"    pm.expect(JSON.stringify(responsebody.orderlines)).to.eql(JSON.stringify(orderLine));",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "ApiKey",
-										"value": "ourSecretApiKey"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
-								},
-								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"losrestapi",
-										"clients",
-										"{{clientId}}",
-										"orders"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderID}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3.5.4 - Update",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "ApiKey",
-										"value": "ourSecretApiKey"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"priority\": 2,\n  \"status\": \"reset\"\n}"
-								},
-								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"losrestapi",
-										"clients",
-										"{{clientId}}",
-										"orders"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderID}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "[Need automate] 3.5.5 - Update Order line",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"orderlineReservations\": [\n        {\n            \"clientReservationId\": \"21819860013\",\n            \"quantity\": 1,\n            \"pickLocation\": \"autoHandlingID_112\"\n        },\n        {\n            \"clientReservationId\": \"21819860014\",\n            \"quantity\": 2,\n            \"pickLocation\": \"autoHandlingID_112\"\n        }\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=1",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"losrestapi",
-										"clients",
-										"{{clientId}}",
-										"orders",
-										"orderlines"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderID}}"
-										},
-										{
-											"key": "line",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3.5.6 - Delete Order Line",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Verify can delete order line, status code 200\", function () {",
-											"    pm.response.to.have.status(204);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders/orderlines?orderId={{orderID}}&line=2",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"losrestapi",
-										"clients",
-										"{{clientId}}",
-										"orders",
-										"orderlines"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderID}}"
-										},
-										{
-											"key": "line",
-											"value": "2"
 										}
 									]
 								}
@@ -3550,153 +3708,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(3): Verify the error response when sending request with shippingDeadlineDate is null",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Verify error message with shippingDeadlineDate is null, status code 400 Bad Request.\", function () {",
-											"    pm.response.to.have.status(400);",
-											"});",
-											"",
-											"const responsebody = pm.response.json();",
-											"",
-											"let expectedErrorMessage = [\"shippingDeadlineDate must not be null\"];",
-											"",
-											"pm.test(\"Verify error message when shippingDeadlineDate is null\", function () {",
-											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "ApiKey",
-										"value": "ourSecretApiKey"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": null,\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
-								},
-								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"losrestapi",
-										"clients",
-										"{{clientId}}",
-										"orders"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderID}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3.5.2(4): Verify the error response when sending request with shippingDeadlineDate is empty",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Verify error message with shippingDeadlineDate is null, status code 400 Bad Request.\", function () {",
-											"    pm.response.to.have.status(400);",
-											"});",
-											"",
-											"const responsebody = pm.response.json();",
-											"",
-											"let expectedErrorMessage = [\"shippingDeadlineDate must not be null\"];",
-											"",
-											"pm.test(\"Verify error message when shippingDeadlineDate is null\", function () {",
-											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "ApiKey",
-										"value": "ourSecretApiKey"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
-								},
-								"url": {
-									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"losrestapi",
-										"clients",
-										"{{clientId}}",
-										"orders"
-									],
-									"query": [
-										{
-											"key": "orderId",
-											"value": "{{orderID}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3.5.2(5): Verify the error response when sending request with orderType is null",
+							"name": "3.5.2(3): Verify the error response when sending request with orderType is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3769,7 +3781,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(6): Verify the error response when sending request with orderType is empty",
+							"name": "3.5.2(4): Verify the error response when sending request with orderType is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3842,7 +3854,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(7): Verify the error response when sending request with carrier is null",
+							"name": "3.5.2(5): Verify the error response when sending request with carrier is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3915,7 +3927,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(8): Verify the error response when sending request with carrier is empty",
+							"name": "3.5.2(6): Verify the error response when sending request with carrier is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3988,7 +4000,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(9): Verify the error response when sending request with maxPackageWeight is nul",
+							"name": "3.5.2(7): Verify the error response when sending request with maxPackageWeight is nul",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4061,7 +4073,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(10): Verify the error response when sending request with maxPackageWeight is empty",
+							"name": "3.5.2(8): Verify the error response when sending request with maxPackageWeight is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4134,7 +4146,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(11): Verify the error response when sending request with line is null",
+							"name": "3.5.2(9): Verify the error response when sending request with line is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4155,7 +4167,7 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = [\"orderlines[0].line must not be null\"];",
+											"let expectedErrorMessage = [\"orderlines[0].line must not be blank\"];",
 											"",
 											"pm.test(\"Verify error message when maxPackageWeight is null\", function () {",
 											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
@@ -4207,7 +4219,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(12): Verify the error response when sending request with line is empty",
+							"name": "3.5.2(10): Verify the error response when sending request with line is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4228,7 +4240,7 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = [\"orderlines[0].line must not be null\"];",
+											"let expectedErrorMessage = [\"orderlines[0].line must not be blank\"];",
 											"",
 											"pm.test(\"Verify error message when maxPackageWeight is null\", function () {",
 											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
@@ -4280,7 +4292,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(13): Verify the error response when sending request with article is null",
+							"name": "3.5.2(11): Verify the error response when sending request with article is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4301,7 +4313,7 @@
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = [\"orderlines[0].article must not be null\"];",
+											"let expectedErrorMessage = [\"orderlines[0].article must not be blank\"];",
 											"",
 											"pm.test(\"Verify error message when article is null\", function () {",
 											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
@@ -4353,7 +4365,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(14): Verify the error response when sending request with article is empty",
+							"name": "3.5.2(12): Verify the error response when sending request with article is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4369,15 +4381,15 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Verify error message with article is empty, status code 400 Bad Request.\", function () {",
-											"    pm.response.to.have.status(404);",
+											"    pm.response.to.have.status(400);",
 											"});",
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = \"Article  does not exist\";",
+											"let expectedErrorMessage = [\"orderlines[0].article must not be blank\"];",
 											"",
 											"pm.test(\"Verify error message when article is null\", function () {",
-											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
 											"});"
 										],
 										"type": "text/javascript"
@@ -4426,7 +4438,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(15): Verify the error response when sending request with quantity is null",
+							"name": "3.5.2(13): Verify the error response when sending request with quantity is null",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4499,7 +4511,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(16): Verify the error response when sending request with quantity is empty",
+							"name": "3.5.2(14): Verify the error response when sending request with quantity is empty",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4572,7 +4584,7 @@
 							"response": []
 						},
 						{
-							"name": "3.5.2(17): Verify behavior when sending request with “packageType” does NOT exist in database",
+							"name": "3.5.2(15): Verify behavior when sending request with “packageType” does NOT exist in database",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -4597,15 +4609,234 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Verify error message with packageType is NOT existed in DB, status code 400 Bad Request.\", function () {",
+											"pm.test(\"Verify error message with packageType is NOT existed in DB, status code 404 Not Found.\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"let expectedErrorMessage = \"Package type \" + pm.environment.get('randomString') +\" does not exist\";",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{randomString}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.2(16) - Verify error message when sending request with maxPackageWeigh has large number",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with maxPackageWeigh has large number, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"maxPackageWeight must be less than or equal to 1000000000000\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 11111111111,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.2(17) - Verify error message when sending request with priority has large number",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with priority has large number, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"maxPackageWeight must be less than or equal to 1000000000000\"];",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify handling Unit status\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"11111111111\",\n  \"orderlines\": {{orderLine}}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.2(18) - Verify error message when sending request with duplicate line in a array",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with duplicate line in a array, status code 400 Bad Request.\", function () {",
 											"    pm.response.to.have.status(400);",
 											"});",
 											"",
 											"const responsebody = pm.response.json();",
 											"",
-											"let expectedErrorMessage = [\"knownDate must not be null\"];",
+											"let expectedErrorMessage = [\"Duplicated order line\"];",
 											"",
-											"pm.test(\"Verify error message when knowndate is null\", function () {",
+											"pm.test(\"Verify error message when maxPackageWeight is null\", function () {",
 											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage)",
 											"});"
 										],
@@ -4631,7 +4862,186 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"knownDate\": {{knownDate}},\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{randomString}}\",\n  \"orderType\": \"{{randomString}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": [\n      {\n      \"line\": \"1\",\n      \"article\": \"2181001\",\n      \"quantity\": 1\n    },\n    {\n      \"line\": \"1\",\n      \"article\": \"2181001\",\n      \"quantity\": 3.000\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{orderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.2(19) - Verify error message when seding request with orderID is empty",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when seding request with orderID is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = \"orderId must not be blank\"",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"ClientID is correct\", function () {",
+											"    pm.expect(responsebody.message).to.eql(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{emptyString}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "orderId",
+											"value": "{{emptyString}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.5.2(20) - Verify error message when sending request with knowndate in the future",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"quantity\", _.random(1,100));",
+											"",
+											"var orderLinesArray = [];",
+											"",
+											"for (var _i = 1; _i <= 1; _i++) {",
+											"    var orderLine = {",
+											"        line: _i.toString(),",
+											"        article: pm.environment.get(\"autoArticleID\"),",
+											"        quantity: pm.environment.get(\"quantity\")",
+											"    };",
+											"",
+											"    orderLinesArray.push(orderLine);",
+											"}",
+											"pm.environment.set(\"orderLine\", JSON.stringify(orderLinesArray));",
+											"",
+											"var time = require('moment');",
+											"var knownTime = time().add(4, 'days');",
+											"var futureTime = time().add(4, 'days');",
+											"pm.environment.set(\"orderID\", \"autoOrderID_\".concat(_.random(20,500)))",
+											"",
+											"pm.environment.set(\"knownDate\", knownTime.format());",
+											"pm.environment.set(\"shippingDeadlineDate\", futureTime.format());",
+											"pm.environment.set(\"loadingDeadlineDate\", futureTime.format());",
+											"pm.environment.set(\"orderPriority\", _.random(1,5));",
+											"",
+											"let packageTypeArray = [\"dm146\",\"dm125\",\"dm104\",\"dm084\",\"dm081\",\"dm069\",\"dm058\",\"dm046\",\"dm42n\",\"dm036\",\"dm30n\",\"dm024\",\"dm015\",\"dm012\",\"dm09n\",\"dm006\",\"dm007\",\"dm001\",\"dmadka\"];",
+											"pm.environment.set(\"packageType\", packageTypeArray[Math.floor(Math.random() * packageTypeArray.length)]);",
+											"",
+											"let orderTypeArray = [\"RBLV\",\"YNOHEXW\",\"YNOHNEXW\",\"YUMX\"];",
+											"pm.environment.set(\"orderType\", orderTypeArray[Math.floor(Math.random() * orderTypeArray.length)]);",
+											"",
+											"let carrierArray = [\"A1\",\"A2\",\"A3\",\"B1\",\"B2\"];",
+											"pm.environment.set(\"carrier\", carrierArray[Math.floor(Math.random() * carrierArray.length)]);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message when sending request with knowndate in the future, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorMessage = [\"knownDate should be in the past\"]",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error message\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorMessage);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"knownDate\": \"{{knownDate}}\",\n  \"shippingDeadlineDate\": \"{{shippingDeadlineDate}}\",\n  \"packageType\": \"{{packageType}}\",\n  \"orderType\": \"{{orderType}}\",\n  \"carrier\": \"{{carrier}}\",\n  \"maxPackageWeight\": 1,\n  \"loadingDeadlineDate\": \"{{loadingDeadlineDate}}\",\n  \"priority\": \"{{orderPriority}}\",\n  \"orderlines\": {{orderLine}}\n}"
 								},
 								"url": {
 									"raw": "{{host}}/losrestapi/clients/{{clientId}}/orders?orderId={{orderID}}",
@@ -5154,14 +5564,14 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Verify error message if quatity is not positive number\", function () {",
-											"    pm.response.to.have.status(400);",
+											"    pm.response.to.have.status(404);",
 											"});",
 											"",
-											"let expectErrorMessage = [\"clientReservationId is already used by another oderID\"]",
+											"let expectErrorMessage = \"Order \" + pm.environment.get('orderID') +\" does not exist for client \" + pm.environment.get('clientId');",
 											"const responsebody = pm.response.json();",
 											"",
 											"pm.test(\"ClientID is correct\", function () {",
-											"    pm.expect(responsebody.body).to.eql(expectErrorMessage);",
+											"    pm.expect(responsebody.message).to.eql(expectErrorMessage);",
 											"});"
 										],
 										"type": "text/javascript"
@@ -5360,7 +5770,20 @@
 					"name": "High priority test case",
 					"item": [
 						{
-							"name": "[Need automate] 3.7.1 - Pick",
+							"name": "3.7.1 - Pick",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Mapping pick successfully\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -5660,41 +6083,665 @@
 			"name": "3.8 - PicklistPick Controller",
 			"item": [
 				{
-					"name": "[Need automate] 3.8.1 -",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "ApiKey",
-								"value": "ourSecretApiKey"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"pick-11361672-004\",\n            \"clientReservationId\": \"21819860010\",\n            \"pickStartDate\": \"2018-03-07T17:18:02.234\",\n            \"pickEndDate\": \"2024-03-07T17:18:37.322\",\n            \"picked\": 2,\n            \"pickerId\": \"pickkerId-2\"\n        }\n}"
-						},
-						"url": {
-							"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
-							"host": [
-								"{{host}}"
+					"name": "High priority test cases",
+					"item": [
+						{
+							"name": "3.8.1 - Verify pickListPick successfully",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var time = require('moment');",
+											"var pastTime = time().subtract(4, 'days');",
+											"var futureTime = time().add(4, 'days');",
+											"",
+											"pm.environment.set(\"fixedPicklistId\", \"pick-11361672-006\");",
+											"pm.environment.set(\"fixedClientReservationId\", \"169\")",
+											"",
+											"pm.environment.set(\"pickStartDate\", pastTime.format());",
+											"pm.environment.set(\"pickEndDate\", futureTime.format());",
+											"pm.environment.set(\"picked\", _.random(1,5));",
+											"pm.environment.set(\"fixedPickerId\", \"pickkerId-3\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify pickListPick successfully, status code 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.picklistId).to.eql(pm.environment.get(\"fixedPicklistId\"));",
+											"});",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.clientReservationId).to.eql(pm.environment.get(\"fixedClientReservationId\"));",
+											"});",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.picked).to.eql(pm.environment.get(\"picked\"));",
+											"});",
+											"",
+											"// pm.test(\"clientReservationId is correct\", function () {",
+											"//     pm.expect(responsebody.pick.pickStartDate).to.eql(pm.environment.get(\"pickStartDate\"));",
+											"// });",
+											"",
+											"// pm.test(\"clientReservationId is correct\", function () {",
+											"//     pm.expect(responsebody.pick.pickEndDate).to.eql(pm.environment.get(\"pickEndDate\"));",
+											"// });",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.picker).to.eql(pm.environment.get(\"fixedPickerId\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
 							],
-							"path": [
-								"losrestapi",
-								"clients",
-								"{{clientId}}",
-								"picklistPicks"
-							]
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPicklistId}}\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "Verify invalid cases",
+					"item": [
+						{
+							"name": "3.8.1(1) - Verify error message if picklistId is empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if picklistId is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = {",
+											"    \"success\": false,",
+											"    \"message\": \"Validation error\",",
+											"    \"body\": [",
+											"        \"pick.picklistId must not be empty\"",
+											"    ]",
+											"}",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(2) - Verify error message if picklistId is null",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if picklistId is null, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = {",
+											"    \"success\": false,",
+											"    \"message\": \"Validation error\",",
+											"    \"body\": [",
+											"        \"pick.picklistId must not be empty\"",
+											"    ]",
+											"}",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": null,\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(3) - Verify error message if clientReservationId is empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if clientReservationId is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = {",
+											"    \"success\": false,",
+											"    \"message\": \"Validation error\",",
+											"    \"body\": [",
+											"        \"pick.clientReservationId must not be empty\"",
+											"    ]",
+											"}",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPickerId}}\",\n            \"clientReservationId\": \"\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(4) - Verify error message if clientReservationId is null",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if clientReservationId is null, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = {",
+											"    \"success\": false,",
+											"    \"message\": \"Validation error\",",
+											"    \"body\": [",
+											"        \"pick.clientReservationId must not be empty\"",
+											"    ]",
+											"}",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPickerId}}\",\n            \"clientReservationId\": null,\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(5) - Verify can send request if pickStartDate is empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify can send request if pickStartDate is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.picklistId).to.eql(pm.environment.get(\"fixedPicklistId\"));",
+											"});",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.clientReservationId).to.eql(pm.environment.get(\"fixedClientReservationId\"));",
+											"});",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.picked).to.eql(pm.environment.get(\"picked\"));",
+											"});",
+											"",
+											"pm.test(\"clientReservationId is correct\", function () {",
+											"    pm.expect(responsebody.pick.picker).to.eql(pm.environment.get(\"fixedPickerId\"));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPicklistId}}\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(6) - Verify error message if pickEndDate is empty",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if pickEndDate is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = [\"pick.pickEndDate must not be null\"]",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPicklistId}}\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"\",\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(7) - Verify error message if pickEndDate is null",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if pickEndDate is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = [\"pick.pickEndDate must not be null\"]",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPicklistId}}\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": null,\n            \"picked\": {{picked}},\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(8) - Verify error message if picked is NEGATIVE number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if picked is empty, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = [\"pick.picked must be positive number\"]",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPicklistId}}\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": -1,\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.8.1(9) - Verify error message if picked is NOT a number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Verify error message if picked is NOT a number, status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"let expectedErrorResponse = [\"pick.picked must be positive number\"]",
+											"",
+											"const responsebody = pm.response.json();",
+											"",
+											"pm.test(\"Verify error in response body\", function () {",
+											"    pm.expect(responsebody.body).to.eql(expectedErrorResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "ApiKey",
+										"value": "ourSecretApiKey"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pick\": \n        {\n            \"picklistId\": \"{{fixedPicklistId}}\",\n            \"clientReservationId\": \"{{fixedClientReservationId}}\",\n            \"pickStartDate\": \"{{pickStartDate}}\",\n            \"pickEndDate\": \"{{pickEndDate}}\",\n            \"picked\": \"{{randomString}}\",\n            \"pickerId\": \"{{fixedPickerId}}\"\n        }\n}"
+								},
+								"url": {
+									"raw": "{{host}}/losrestapi/clients/{{clientId}}/picklistPicks",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"losrestapi",
+										"clients",
+										"{{clientId}}",
+										"picklistPicks"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
